@@ -8,7 +8,7 @@ public  class HideStateManager : MonoBehaviour
 
     //public static HideStateManager instance;
 
-    public bool IsImprisoned;
+    public bool IsImprisoned { get; set; }  
     public GameObject jail;
     private NavMeshAgent nma;
 
@@ -29,10 +29,18 @@ public  class HideStateManager : MonoBehaviour
     // Update is called once per frame
     public void Imprison()
     {
-        this.gameObject.layer = LayerMask.NameToLayer("Imprison");
-        IsImprisoned = true;
-        jail.transform.position = transform.position;
-        jail.SetActive(true);
+        if (this.gameObject.CompareTag("Player"))
+        {
+            IsImprisoned = true;
+            GameManager.instance.LoseGameAction();
+        }
+        else
+        {
+            this.gameObject.layer = LayerMask.NameToLayer("Imprison");
+            IsImprisoned = true;
+            jail.transform.position = transform.position;
+            jail.SetActive(true);
+        }
     }
 
 }

@@ -11,12 +11,22 @@ public class SeekStateManager : MonoBehaviour
     public LayerMask targetMask;
     public LayerMask obstructionMask;
     public GameObject hideCharacter;
+    public int CharacerInImprison{ get; set; }
+    private void Start()
+    {
+        CharacerInImprison = 0;
+    }
     private void Update()
     {
         if(FieldOfViewCheck())
         {
-            if(hideCharacter.GetComponent<HideStateManager>() != null) {
-                hideCharacter.GetComponent<HideStateManager>().Imprison();
+            var HideStateOfCharacter = hideCharacter.GetComponent<HideStateManager>();
+            if (HideStateOfCharacter != null) {
+                HideStateOfCharacter.Imprison();
+            }
+            if (this.gameObject.CompareTag("Player"))
+            {
+                CharacerInImprison++;
             }
         }
     }
@@ -42,4 +52,6 @@ public class SeekStateManager : MonoBehaviour
         }
         return false;
     }
+
+
 }

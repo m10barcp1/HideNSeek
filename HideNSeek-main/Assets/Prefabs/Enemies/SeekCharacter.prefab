@@ -1167,7 +1167,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2517810711180334828
 Transform:
   m_ObjectHideFlags: 0
@@ -1233,16 +1233,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe08391d2ee4073498a2ce8abe506312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 2.47
-  angle: 74
-  playerRef: {fileID: 0}
+  radius: 2.79
+  angle: 98
   targetMask:
     serializedVersion: 2
     m_Bits: 128
   obstructionMask:
     serializedVersion: 2
     m_Bits: 8
-  canSeePlayer: 0
   hideCharacter: {fileID: 0}
 --- !u!54 &7751776717255196661
 Rigidbody:
