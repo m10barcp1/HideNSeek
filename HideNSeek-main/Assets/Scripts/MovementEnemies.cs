@@ -26,18 +26,34 @@ public class MovementEnemies : MonoBehaviour
     }
     private void Update()
     {
+        var HideCharacter = this.gameObject.GetComponent<HideStateManager>();
+        var SeekCharacter = this.gameObject.GetComponent<SeekStateManager>();
+
         if (GameManager.instance.onClick)
         {
-
-            nma.speed = 2.5f;
-            anim.SetBool("IsMoving", true);
-            anim.SetFloat("Speed", nma.speed);
-            if (!nma.hasPath && !flag)
+            if(HideCharacter!= null)
             {
-                flag = true;
-                SetRandomDestination();
+                CharacterMovement(2f);
+            }else if(SeekCharacter!= null)
+            {
+                if (GameManager.instance.StartGame)
+                {
+                    CharacterMovement(0.5f);
+                }
             }
         }
+    }
+     void CharacterMovement(float moveSpeed)
+    {
+        nma.speed = moveSpeed;
+        anim.SetBool("IsMoving", true);
+        anim.SetFloat("Speed", nma.speed);
+        if (!nma.hasPath && !flag)
+        {
+            flag = true;
+            SetRandomDestination();
+        }
+
         if (this.gameObject.GetComponent<HideStateManager>() != null)
         {
             if (this.gameObject.GetComponent<HideStateManager>().IsImprisoned)
