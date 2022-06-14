@@ -16,9 +16,35 @@ public class MovementPlayer : MonoBehaviour
         //joystick = GameObject.Find("Dynamic Joystick").GetComponent<DynamicJoystick>();
 
     }
-
     void Update()
     {
+        var HideCharacter = this.gameObject.GetComponent<HideStateManager>();
+        var SeekCharacter = this.gameObject.GetComponent<SeekStateManager>();
+        if (HideCharacter != null)
+        {
+            if (!HideCharacter.IsImprisoned)
+            {
+                MovementState(playSpeed);
+            } 
+        }
+        else
+        {
+            if (GameManager.instance.StartGame)
+            {
+                MovementState(0.5f);
+            }
+        }
+
+
+    }
+    private bool onGround()
+    {
+        RaycastHit hit;
+        return Physics.Raycast(transform.position, Vector3.down, out hit, .5f);
+    }
+    public void MovementState(float Speed)
+    {
+        
         float horizontalInput = joystick.Horizontal;
         float verticalInput = joystick.Vertical;
         float _gravity = 0;
@@ -31,24 +57,32 @@ public class MovementPlayer : MonoBehaviour
         }
         if (Mathf.Abs(horizontalInput) > .1f || Mathf.Abs(verticalInput) > .1f)
         {
-            _controller.Move(move * Time.deltaTime * playSpeed);
+            _controller.Move(move * Time.deltaTime * Speed);
         }
         if (Mathf.Abs(horizontalInput) > .1f || Mathf.Abs(verticalInput) > .1f)
-        {   
+        {
             gameObject.transform.forward = new Vector3(horizontalInput, 0, verticalInput);
             anim.SetBool("IsMoving", true);
             anim.SetFloat("Speed", Mathf.Max(Mathf.Abs(horizontalInput), Mathf.Abs(verticalInput)));
         }
         else
         {
-            anim.SetBool("IsMoving", false);
+            SetStateIdle();
         }
-
-
     }
-    private bool onGround()
+    public void SetStateIdle()
     {
-        RaycastHit hit;
-        return Physics.Raycast(transform.position, Vector3.down, out hit, .5f);
+        anim.SetBool("IsMoving", false);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(GameManager.instance.StateOfGame == GameManager.GameState.hide)
+        {
+            var HideCharacter = other.GetComponent<HideStateManager>();
+            if (HideCharacter != null)
+            {
+                HideCharacter.ResetState();
+            }
+        }
     }
 }

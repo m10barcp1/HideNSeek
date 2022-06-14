@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5529495996149477321}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -129,15 +129,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6964361109850432510, guid: 0080ad3d07abced41b0e99855604f5e9, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 6964361109850432510, guid: 0080ad3d07abced41b0e99855604f5e9, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 6964361109850432510, guid: 0080ad3d07abced41b0e99855604f5e9, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 6964361109850432510, guid: 0080ad3d07abced41b0e99855604f5e9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -185,11 +185,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7777066930898106692, guid: 0080ad3d07abced41b0e99855604f5e9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9098938705858141871, guid: 0080ad3d07abced41b0e99855604f5e9, type: 3}
       propertyPath: m_Height
-      value: 3.72
+      value: 3.51
       objectReference: {fileID: 0}
     - target: {fileID: 9098938705858141871, guid: 0080ad3d07abced41b0e99855604f5e9, type: 3}
       propertyPath: m_Center.y
@@ -212,6 +212,10 @@ PrefabInstance:
     - target: {fileID: 5002031058568935166, guid: 377b28846e8dc0647bef38581892108d, type: 3}
       propertyPath: m_Name
       value: HidePlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 5002031058568935166, guid: 377b28846e8dc0647bef38581892108d, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5546909606756351182, guid: 377b28846e8dc0647bef38581892108d, type: 3}
       propertyPath: jail

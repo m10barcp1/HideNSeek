@@ -42,8 +42,13 @@ public class MovementEnemies : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            nma.speed = 0;
+            anim.SetBool("IsMoving", false);
+        }
     }
-     void CharacterMovement(float moveSpeed)
+    public void CharacterMovement(float moveSpeed)
     {
         nma.speed = moveSpeed;
         anim.SetBool("IsMoving", true);
