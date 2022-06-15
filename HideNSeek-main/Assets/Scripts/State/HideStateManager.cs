@@ -10,9 +10,11 @@ public  class HideStateManager : MonoBehaviour
 
     public bool IsImprisoned;
     public GameObject jail;
-
+    public Rigidbody rb;
     private void Awake()
     {
+        if (!this.gameObject.CompareTag("Player"))
+            rb = GetComponent<Rigidbody>();
         IsImprisoned = false;
     }
     public void Imprison()
@@ -33,11 +35,19 @@ public  class HideStateManager : MonoBehaviour
     }
     public void ResetState()
     {
-        IsImprisoned = false;
-        this.gameObject.layer = LayerMask.NameToLayer("HideMask");
+        
+        gameObject.layer = LayerMask.NameToLayer("HideMask");
         jail.SetActive(false);
-        this.transform.position = Vector3.zero;
+        if (!this.gameObject.CompareTag("Player"))
+            rb.velocity = Vector3.zero;
+        if (!IsImprisoned)
+        {
+            transform.localRotation = new Quaternion(0, 0, 0, 0);
+            transform.localPosition = Vector3.zero;
+        }
+        Debug.Log(this.transform.position);
         transform.GetChild(0).gameObject.SetActive(true);
+        IsImprisoned = false;
     }   
     public void TurnOffModel()
     {

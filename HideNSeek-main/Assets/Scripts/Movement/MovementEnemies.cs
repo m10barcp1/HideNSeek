@@ -19,7 +19,6 @@ public class MovementEnemies : MonoBehaviour
     }
     private void Start()
     {
-        
         nma.speed = 0;
         anim.SetBool("IsMoving", false);
         SetRandomDestination();
@@ -29,27 +28,30 @@ public class MovementEnemies : MonoBehaviour
         var HideCharacter = this.gameObject.GetComponent<HideStateManager>();
         var SeekCharacter = this.gameObject.GetComponent<SeekStateManager>();
 
-        if (GameManager.instance.onClick)
+        if (GameManager.instance.onClick && !GameManager.instance.EndGame)
         {
-            if(HideCharacter!= null)
+            nma.enabled = true;
+            if (HideCharacter!= null)
             {
                 CharacterMovement(2f);
-            }else if(SeekCharacter!= null)
+            }
+            else if(SeekCharacter!= null)
             {
                 if (GameManager.instance.StartGame)
                 {
-                    CharacterMovement(0.5f);
+                    CharacterMovement(3f);
                 }
             }
         }
         else
         {
-            nma.speed = 0;
+            nma.enabled = false;
             anim.SetBool("IsMoving", false);
         }
     }
     public void CharacterMovement(float moveSpeed)
     {
+        var HideCharacter = this.gameObject.GetComponent<HideStateManager>();
         nma.speed = moveSpeed;
         anim.SetBool("IsMoving", true);
         anim.SetFloat("Speed", nma.speed);
@@ -58,10 +60,9 @@ public class MovementEnemies : MonoBehaviour
             flag = true;
             SetRandomDestination();
         }
-
-        if (this.gameObject.GetComponent<HideStateManager>() != null)
+        if (HideCharacter != null)
         {
-            if (this.gameObject.GetComponent<HideStateManager>().IsImprisoned)
+            if (HideCharacter.IsImprisoned)
             {
                 nma.speed = 0;
                 anim.SetBool("IsMoving", false);

@@ -20,50 +20,49 @@ public class MovementPlayer : MonoBehaviour
     {
         var HideCharacter = this.gameObject.GetComponent<HideStateManager>();
         var SeekCharacter = this.gameObject.GetComponent<SeekStateManager>();
-        if (HideCharacter != null)
+        if (!GameManager.instance.EndGame && GameManager.instance.onClick)
         {
-            if (!HideCharacter.IsImprisoned)
+            _controller.enabled = true;
+            if (HideCharacter != null)
             {
-                MovementState(playSpeed);
-            } 
+                if (!HideCharacter.IsImprisoned)
+                {
+                    MovementState(playSpeed);
+                }
+            }
+            else if (SeekCharacter != null)
+            {
+                if (GameManager.instance.StartGame)
+                {
+                    MovementState(2.5f);
+                }
+            }
         }
         else
         {
-            if (GameManager.instance.StartGame)
-            {
-                MovementState(0.5f);
-            }
+            _controller.enabled = false;
+
         }
+        
 
 
-    }
-    private bool onGround()
-    {
-        RaycastHit hit;
-        return Physics.Raycast(transform.position, Vector3.down, out hit, .5f);
     }
     public void MovementState(float Speed)
     {
         
         float horizontalInput = joystick.Horizontal;
         float verticalInput = joystick.Vertical;
-        float _gravity = 0;
         Vector3 move = new Vector3(horizontalInput, 0, verticalInput);
-        if (!onGround())
-        {
-            _gravity -= gravity * Time.deltaTime;
-            move.y = _gravity;
-            _controller.Move(move);
-        }
         if (Mathf.Abs(horizontalInput) > .1f || Mathf.Abs(verticalInput) > .1f)
         {
+            move.y -= gravity*Time.deltaTime;
             _controller.Move(move * Time.deltaTime * Speed);
-        }
-        if (Mathf.Abs(horizontalInput) > .1f || Mathf.Abs(verticalInput) > .1f)
-        {
-            gameObject.transform.forward = new Vector3(horizontalInput, 0, verticalInput);
-            anim.SetBool("IsMoving", true);
-            anim.SetFloat("Speed", Mathf.Max(Mathf.Abs(horizontalInput), Mathf.Abs(verticalInput)));
+            if (Speed != 0)
+            {
+                gameObject.transform.forward = new Vector3(horizontalInput, 0, verticalInput);
+                anim.SetBool("IsMoving", true);
+                anim.SetFloat("Speed", Mathf.Max(Mathf.Abs(horizontalInput), Mathf.Abs(verticalInput)));
+            }
         }
         else
         {
@@ -81,6 +80,7 @@ public class MovementPlayer : MonoBehaviour
             var HideCharacter = other.GetComponent<HideStateManager>();
             if (HideCharacter != null)
             {
+                if(HideCharacter.IsImprisoned)
                 HideCharacter.ResetState();
             }
         }
