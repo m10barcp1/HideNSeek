@@ -48,11 +48,13 @@ public class CameraController : MonoBehaviour
         }
         if (checkMoveAtStartGame)
         {
-            Debug.Log("Follow");
             Vector3 targetPosition = target.position + _offset;
             transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _currentVelocity, smoothTime);
-
         }
+    }
+    public void ResetTransform()
+    {
+        transform.transform.position = A.position;
     }
 
 }

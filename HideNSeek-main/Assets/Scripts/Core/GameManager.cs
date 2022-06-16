@@ -54,7 +54,6 @@ public class GameManager : MonoBehaviour
         joystick.SetActive(false);
         InitTransform = Player.transform;
     }
-
     private void Update()
     {
         if (onClick)
@@ -83,30 +82,26 @@ public class GameManager : MonoBehaviour
                         if(!WinGame)    LoseGameAction();
                     }
                 }
-                
-
-
                 // X? lý khi k?t thúc ván
                 if (TimePlay <= 0)
                 {
-
                     EndGame = true; 
                     ResetStateForPlayer();
-                    if (StateOfGame == GameState.hide){
+                    if (StateOfGame == GameState.hide)
+                    {
                         if (!LoseGame)
                         { 
-                            
                             WinGameAction();
                         }
-                    }else if(StateOfGame == GameState.seek)
+                    }
+                    else if(StateOfGame == GameState.seek)
                     {
                         if(SeekPlayer.CharacerInImprison > Character.Length/2)
                         {
                             WinGameAction();
                         }
                         else if(!WinGame)
-                        {
-                            
+                        {  
                             LoseGameAction();
                         }
                     }
@@ -127,6 +122,34 @@ public class GameManager : MonoBehaviour
         TimePlay = Mathf.Max(TimePlay - Time.deltaTime, 0);
         CountDownTime.text = Mathf.Round(TimePlay).ToString();
     }
+    public void BeforeStartGame()
+    {
+        // Set state
+        StartGame = false; EndGame = false;
+        WinGame = false; LoseGame = false;
+        onClick = false;
+        //Camera
+        Camera.GetComponent<CameraController>().ResetTransform();
+
+        //SeekPlayer
+        Player.transform.position = InitTransform.position;
+        Player.transform.GetChild(0).gameObject.SetActive(false);
+        Player.transform.GetChild(0).transform.localPosition = Vector3.zero;
+        //HidePlayer
+        Player.transform.GetChild(1).gameObject.SetActive(true);
+        Player.transform.GetChild(1).GetComponent<HideStateManager>().ResetState();
+
+        for (int j = 0; j < Character.Length; j++)
+        {
+            //Seek
+            Character[j].transform.GetChild(0).gameObject.SetActive(false);
+            Character[j].transform.GetChild(0).transform.localPosition = Vector3.zero;
+
+            //Hide
+            Character[j].transform.GetChild(1).gameObject.SetActive(true);
+            Character[j].transform.GetChild(1).GetComponent<HideStateManager>().ResetState();
+        }
+    }
     public void OnSeekState()
     {
         if (!onClick)
@@ -136,9 +159,7 @@ public class GameManager : MonoBehaviour
             joystick.SetActive(true);
             HideBtn.SetActive(false);
             SeekBtn.SetActive(false);
-            Debug.Log(Camera.GetComponent<CameraController>());
             InsSeek();
-
         }
     }
     public void OnHideState()
@@ -166,34 +187,6 @@ public class GameManager : MonoBehaviour
         Player.transform.GetChild(0).gameObject.SetActive(true);
         Player.transform.GetChild(1).gameObject.SetActive(false);
     }
-
-    public void BeforeStartGame()
-    {
-        // Set state
-        StartGame = false; EndGame = false;
-        WinGame = false;   LoseGame = false;         
-        onClick = false;
-        
-
-        //SeekPlayer
-        Player.transform.position = InitTransform.position;
-        Player.transform.GetChild(0).gameObject.SetActive(false);
-        Player.transform.GetChild(0).transform.localPosition = Vector3.zero;
-        //HidePlayer
-        Player.transform.GetChild(1).gameObject.SetActive(true);
-        Player.transform.GetChild(1).GetComponent<HideStateManager>().ResetState();
-
-        for (int j = 0; j < Character.Length; j++)
-        {
-            //Seek
-            Character[j].transform.GetChild(0).gameObject.SetActive(false);
-            Character[j].transform.GetChild(0).transform.localPosition = Vector3.zero;
-
-            //Hide
-            Character[j].transform.GetChild(1).gameObject.SetActive(true);
-            Character[j].transform.GetChild(1).GetComponent<HideStateManager>().ResetState();
-        }
-    }
     public void TurnOffAllModelOfHideCharacter()
     {
         foreach(GameObject i in Character)
@@ -219,10 +212,10 @@ public class GameManager : MonoBehaviour
         //LoseGame = false;
 
         WinPanel.SetActive(false);
-        BeforeStartGame();
         LosePanel.SetActive(false);
         HideBtn.SetActive(true);
         SeekBtn.SetActive(true);
+        BeforeStartGame();
 
 
     }
@@ -232,7 +225,6 @@ public class GameManager : MonoBehaviour
         HideBtn.SetActive(true);
         SeekBtn.SetActive(true);
         BeforeStartGame();
-
         indexCurentLevel++;
         InsLevel(indexCurentLevel);
         

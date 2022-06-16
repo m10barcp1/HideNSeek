@@ -979,6 +979,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f8e514723672945ae0db654c8fcd40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playSpeed: 4
+  rotationSpeed: 5
   joystick: {fileID: 0}
 --- !u!114 &5546909606756351182
 MonoBehaviour:
@@ -993,7 +995,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsImprisoned: 0
-  jail: {fileID: 0}
+  jail: {fileID: 8903301025808367844, guid: e4f8812c20e89b84a811d03779df1f00, type: 3}
+  rb: {fileID: 0}
+  SeekPlayer: {fileID: 0}
+  RightFootLocation: {fileID: 0}
+  LeftFootLocation: {fileID: 0}
+  FootPrint: {fileID: 0}
+  FootPrintMode: 0
 --- !u!1 &5093186296555836837
 GameObject:
   m_ObjectHideFlags: 0

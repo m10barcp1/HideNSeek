@@ -87,9 +87,6 @@ public class MovementEnemies : MonoBehaviour
     }
     private void CheckPointOnPath()
     {
-        if (nma.pathEndPosition != moveto)
-        {
-            SetRandomDestination();
-        }
+        if (nma.pathEndPosition != moveto) SetRandomDestination();
     }
 }

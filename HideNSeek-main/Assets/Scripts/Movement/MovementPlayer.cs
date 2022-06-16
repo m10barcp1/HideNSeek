@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class MovementPlayer : MonoBehaviour
 {
+    [SerializeField]
     private float playSpeed = 4f;
+    [SerializeField]
+    private float rotationSpeed = 5f;
     private float gravity = 9.8f;
     private CharacterController _controller;
     private Animator anim;
@@ -13,8 +16,6 @@ public class MovementPlayer : MonoBehaviour
     {
         _controller = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
-        //joystick = GameObject.Find("Dynamic Joystick").GetComponent<DynamicJoystick>();
-
     }
     void Update()
     {
@@ -43,9 +44,6 @@ public class MovementPlayer : MonoBehaviour
             _controller.enabled = false;
 
         }
-        
-
-
     }
     public void MovementState(float Speed)
     {
@@ -60,6 +58,8 @@ public class MovementPlayer : MonoBehaviour
             if (Speed != 0)
             {
                 gameObject.transform.forward = new Vector3(horizontalInput, 0, verticalInput);
+                //Quaternion toRotation = Quaternion.LookRotation(move, Vector3.up);
+                //transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed);
                 anim.SetBool("IsMoving", true);
                 anim.SetFloat("Speed", Mathf.Max(Mathf.Abs(horizontalInput), Mathf.Abs(verticalInput)));
             }
@@ -69,10 +69,8 @@ public class MovementPlayer : MonoBehaviour
             SetStateIdle();
         }
     }
-    public void SetStateIdle()
-    {
-        anim.SetBool("IsMoving", false);
-    }
+    public void SetStateIdle() => anim.SetBool("IsMoving", false);
+    
     private void OnTriggerEnter(Collider other)
     {
         if(GameManager.instance.StateOfGame == GameManager.GameState.hide)
@@ -81,7 +79,7 @@ public class MovementPlayer : MonoBehaviour
             if (HideCharacter != null)
             {
                 if(HideCharacter.IsImprisoned)
-                HideCharacter.ResetState();
+                HideCharacter.OutImprison();
             }
         }
     }
