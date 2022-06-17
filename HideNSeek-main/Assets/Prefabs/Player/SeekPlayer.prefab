@@ -585,7 +585,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: adc17f83f895ce4459ba593a27d8b1f3, type: 2}
+  - {fileID: 2100000, guid: 6fdeaf41e95b6434297a71064e0850bf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2569,10 +2569,13 @@ MonoBehaviour:
     m_Bits: 1024
   hideCharacter: {fileID: 0}
   targetObj: {fileID: 0}
+  visibleTargets: []
   meshResolution: 1
   edgeResolveIterations: 8
   edgeDstThreshold: 1
   viewMeshFilter: {fileID: 6347606178720122196}
+  PrisonerText: {fileID: 0}
+  CharacerInImprison: 0
 --- !u!143 &9098938705858141871
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2603,6 +2606,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f8e514723672945ae0db654c8fcd40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playSpeed: 4
+  rotationSpeed: 5
   joystick: {fileID: 0}
 --- !u!1 &8069663007104835709
 GameObject:

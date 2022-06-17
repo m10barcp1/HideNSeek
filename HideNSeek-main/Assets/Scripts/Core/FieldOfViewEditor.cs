@@ -17,11 +17,11 @@ public class FieldOfViewEditor : Editor
         Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngle01 * fov.viewRadius);
         Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngle02 * fov.viewRadius);
 
-        if (fov.FieldOfViewCheck())
-        {
-            Handles.color = Color.green;
-            Handles.DrawLine(fov.transform.position, fov.hideCharacter.transform.position);
-        }
+        //if (fov.FieldOfViewCheck())
+        //{
+        //    Handles.color = Color.green;
+        //    Handles.DrawLine(fov.transform.position, fov.hideCharacter.transform.position);
+        //}
     }
 
     private Vector3 DirectionFromAngle(float eulerY, float angleInDegrees)

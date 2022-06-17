@@ -16,6 +16,8 @@ public class SeekStateManager : MonoBehaviour
     [HideInInspector]
     public  GameObject targetObj;
 
+	public List<GameObject> visibleTargets = new List<GameObject>();
+
 	[Header("Draw Field Of View")]
 	public float meshResolution;
 	public int edgeResolveIterations;
@@ -26,7 +28,7 @@ public class SeekStateManager : MonoBehaviour
 
 
 	public Text PrisonerText;
-	public int CharacerInImprison{ get; set; }
+	public int CharacerInImprison;
     private void Start()
     {
 		viewMesh = new Mesh();
@@ -38,44 +40,56 @@ public class SeekStateManager : MonoBehaviour
     {
         if (GameManager.instance.StartGame)
         {
-            if (FieldOfViewCheck())
-            {
-                var HideStateOfCharacter = hideCharacter.GetComponent<HideStateManager>();
-                if (HideStateOfCharacter != null)
-                {
-                    HideStateOfCharacter.Imprison();
-                }
-                if (gameObject.CompareTag("Player"))
-                {
-					
-                    CharacerInImprison++;
-					PrisonerText.text = CharacerInImprison.ToString();
-
+			FieldOfViewCheck();
+            foreach (var i in visibleTargets)
+			{
+				var HideStateOfCharacter = i.GetComponent<HideStateManager>();
+				if (HideStateOfCharacter != null)
+				{
+					HideStateOfCharacter.Imprison();
 				}
-            }
-        }
+				IncreaseCharaceterInImprison();
+				
+			}
+			
+		}
 		DrawFieldOfView();
 	}
-    public bool FieldOfViewCheck()
+	public void ResetCharaceterInImprison()
     {
-        Collider[] rangeChecks = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
+		CharacerInImprison = 0;
+		PrisonerText.text = CharacerInImprison.ToString();
+	}
+	public void IncreaseCharaceterInImprison()
+    {
+		CharacerInImprison++;
+		PrisonerText.text = CharacerInImprison.ToString();
+	}
+	public void DecreaseCharaceterInImprison()
+    {
+		CharacerInImprison--;
+		PrisonerText.text = CharacerInImprison.ToString();
+	}
 
-        if (rangeChecks.Length != 0)
-        {
-            Transform target = rangeChecks[0].transform;
-            Vector3 directionToTarget = (target.position - transform.position).normalized;
 
-            if (Vector3.Angle(transform.forward, directionToTarget) < viewAngle / 2)
-            {
-                float distanceToTarget = Vector3.Distance(transform.position, target.position);
-                if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask))
-                {
-                   hideCharacter = target.gameObject;
-                   return true;
-                }
-            }
-        }
-        return false;
+	public void FieldOfViewCheck()
+    {
+		visibleTargets.Clear();
+		Collider[] rangeChecks = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
+
+		for (int i = 0; i < rangeChecks.Length; i++)
+		{
+			Transform target = rangeChecks[i].transform;
+			Vector3 dirToTarget = (target.position - transform.position).normalized;
+			if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2)
+			{
+				float dstToTarget = Vector3.Distance(transform.position, target.position);
+				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
+				{
+					visibleTargets.Add(target.gameObject);	
+				}
+			}
+		}
     }
     #region DrawView
 

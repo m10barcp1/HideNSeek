@@ -92,6 +92,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: HideCharacter
       objectReference: {fileID: 0}
+    - target: {fileID: 6930018181089426628, guid: 23e330c5ac5d423488419c01a944ea93, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7470267289565539262, guid: 23e330c5ac5d423488419c01a944ea93, type: 3}
+      propertyPath: m_Center.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8592157408046979393, guid: 23e330c5ac5d423488419c01a944ea93, type: 3}
+      propertyPath: m_Height
+      value: 1.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 8592157408046979393, guid: 23e330c5ac5d423488419c01a944ea93, type: 3}
+      propertyPath: m_Radius
+      value: 0.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 8592157408046979393, guid: 23e330c5ac5d423488419c01a944ea93, type: 3}
+      propertyPath: m_BaseOffset
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23e330c5ac5d423488419c01a944ea93, type: 3}
 --- !u!4 &2531243040636574254 stripped
@@ -489,12 +509,16 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2413495160316279100, guid: 34f71999058c9664789628e27d30fd4a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.4070331
+      objectReference: {fileID: 0}
+    - target: {fileID: 2413495160316279100, guid: 34f71999058c9664789628e27d30fd4a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2413495160316279100, guid: 34f71999058c9664789628e27d30fd4a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.0075
       objectReference: {fileID: 0}
     - target: {fileID: 2413495160316279100, guid: 34f71999058c9664789628e27d30fd4a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -528,9 +552,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2413495160316279101, guid: 34f71999058c9664789628e27d30fd4a, type: 3}
+      propertyPath: m_Center.y
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 2413495160316279103, guid: 34f71999058c9664789628e27d30fd4a, type: 3}
       propertyPath: m_Name
       value: PrisonCube
+      objectReference: {fileID: 0}
+    - target: {fileID: 2413495160316279103, guid: 34f71999058c9664789628e27d30fd4a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34f71999058c9664789628e27d30fd4a, type: 3}

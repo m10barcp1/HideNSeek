@@ -5,7 +5,7 @@ using UnityEngine;
 public class MovementPlayer : MonoBehaviour
 {
     [SerializeField]
-    private float playSpeed = 4f;
+    private float playSpeed = 2.5f;
     [SerializeField]
     private float rotationSpeed = 5f;
     private float gravity = 9.8f;
@@ -23,7 +23,9 @@ public class MovementPlayer : MonoBehaviour
         var SeekCharacter = this.gameObject.GetComponent<SeekStateManager>();
         if (!GameManager.instance.EndGame && GameManager.instance.onClick)
         {
-            _controller.enabled = true;
+            if (Mathf.Abs(joystick.Horizontal) > .1f || Mathf.Abs(joystick.Vertical) > .1f)
+                _controller.enabled = true;
+            _controller.Move(new Vector3(0, -gravity * Time.deltaTime, 0));
             if (HideCharacter != null)
             {
                 if (!HideCharacter.IsImprisoned)
@@ -53,7 +55,7 @@ public class MovementPlayer : MonoBehaviour
         Vector3 move = new Vector3(horizontalInput, 0, verticalInput);
         if (Mathf.Abs(horizontalInput) > .1f || Mathf.Abs(verticalInput) > .1f)
         {
-            move.y -= gravity*Time.deltaTime;
+            move.y -= gravity;
             _controller.Move(move * Time.deltaTime * Speed);
             if (Speed != 0)
             {
@@ -69,8 +71,11 @@ public class MovementPlayer : MonoBehaviour
             SetStateIdle();
         }
     }
-    public void SetStateIdle() => anim.SetBool("IsMoving", false);
-    
+    public void SetStateIdle()
+    {
+        anim.SetBool("IsMoving", false);
+        _controller.Move(Vector3.zero);
+    }   
     private void OnTriggerEnter(Collider other)
     {
         if(GameManager.instance.StateOfGame == GameManager.GameState.hide)
@@ -78,9 +83,17 @@ public class MovementPlayer : MonoBehaviour
             var HideCharacter = other.GetComponent<HideStateManager>();
             if (HideCharacter != null)
             {
-                if(HideCharacter.IsImprisoned)
-                HideCharacter.OutImprison();
+                if (HideCharacter.IsImprisoned)
+                {
+                    HideCharacter.OutImprison();
+                    if (GameManager.instance.SeekEnemies != null)
+                    {
+                        GameManager.instance.SeekEnemies.GetComponent<SeekStateManager>().DecreaseCharaceterInImprison();
+                    }
+                }
+                    
             }
+            
         }
     }
 }

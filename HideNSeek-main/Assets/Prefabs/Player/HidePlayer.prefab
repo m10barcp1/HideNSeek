@@ -960,7 +960,7 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.82
+  m_Height: 2.9
   m_Radius: 0.38
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -1002,6 +1002,9 @@ MonoBehaviour:
   LeftFootLocation: {fileID: 0}
   FootPrint: {fileID: 0}
   FootPrintMode: 0
+  GroundMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &5093186296555836837
 GameObject:
   m_ObjectHideFlags: 0

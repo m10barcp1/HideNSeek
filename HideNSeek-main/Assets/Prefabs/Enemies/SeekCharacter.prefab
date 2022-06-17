@@ -372,7 +372,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 671190961035542692}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2517810711180334828}
@@ -405,7 +405,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: adc17f83f895ce4459ba593a27d8b1f3, type: 2}
+  - {fileID: 2100000, guid: 6fdeaf41e95b6434297a71064e0850bf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1325,10 +1325,13 @@ MonoBehaviour:
     m_Bits: 1
   hideCharacter: {fileID: 0}
   targetObj: {fileID: 0}
+  visibleTargets: []
   meshResolution: 1
   edgeResolveIterations: 8
   edgeDstThreshold: 1
   viewMeshFilter: {fileID: 5818933032593470338}
+  PrisonerText: {fileID: 0}
+  CharacerInImprison: 0
 --- !u!54 &7751776717255196661
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1353,7 +1356,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3006961085071985750}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.89
   m_Height: 3.84

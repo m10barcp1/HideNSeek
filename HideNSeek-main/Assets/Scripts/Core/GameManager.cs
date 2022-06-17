@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Setting")]
     public GameObject Player;
+    public GameObject SeekEnemies;
     public GameObject[] Character;
     //private List<Vector3> InitTransform;
     [HideInInspector]
@@ -41,6 +42,8 @@ public class GameManager : MonoBehaviour
 
     private int indexCurentLevel;
     private Transform InitTransform;
+
+
     private void Awake()
     {
         if(instance == null)
@@ -110,7 +113,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            TimePlay = 10f;
+            TimePlay = 30f;
             TimeStartUp = 4f;
             StartGame = false; EndGame = false;
             WinGame = false; LoseGame = false;
@@ -130,24 +133,28 @@ public class GameManager : MonoBehaviour
         onClick = false;
         //Camera
         Camera.GetComponent<CameraController>().ResetTransform();
-
+        var SeekPlayer = Player.transform.GetChild(0);
         //SeekPlayer
         Player.transform.position = InitTransform.position;
-        Player.transform.GetChild(0).gameObject.SetActive(false);
-        Player.transform.GetChild(0).transform.localPosition = Vector3.zero;
+        SeekPlayer.gameObject.SetActive(false);
+        SeekPlayer.transform.localPosition = Vector3.zero;
+        SeekPlayer.GetComponent<SeekStateManager>().ResetCharaceterInImprison();
         //HidePlayer
         Player.transform.GetChild(1).gameObject.SetActive(true);
         Player.transform.GetChild(1).GetComponent<HideStateManager>().ResetState();
 
         for (int j = 0; j < Character.Length; j++)
         {
+            var SeekCharacter = Character[j].transform.GetChild(0);
+            var HideCharacter = Character[j].transform.GetChild(1);
             //Seek
-            Character[j].transform.GetChild(0).gameObject.SetActive(false);
-            Character[j].transform.GetChild(0).transform.localPosition = Vector3.zero;
+            SeekCharacter.gameObject.SetActive(false);
+            SeekCharacter.transform.localPosition = Vector3.zero;
+            SeekPlayer.GetComponent<SeekStateManager>().ResetCharaceterInImprison();    
 
             //Hide
-            Character[j].transform.GetChild(1).gameObject.SetActive(true);
-            Character[j].transform.GetChild(1).GetComponent<HideStateManager>().ResetState();
+            HideCharacter.gameObject.SetActive(true);
+            HideCharacter.GetComponent<HideStateManager>().ResetState();
         }
     }
     public void OnSeekState()
@@ -177,9 +184,12 @@ public class GameManager : MonoBehaviour
     }
     public void InsHide(int i)
     {
-        Character[i].transform.GetChild(0).GetComponent<SeekStateManager>().CharacerInImprison = 0;
-        Character[i].transform.GetChild(0).gameObject.SetActive(true);
-        Character[i].transform.GetChild(1).gameObject.SetActive(false);
+        var SeekCharacter = Character[i].transform.GetChild(0);
+        SeekEnemies = SeekCharacter.gameObject;
+        var HideCharacter = Character[i].transform.GetChild(1);
+        SeekCharacter.GetComponent<SeekStateManager>().CharacerInImprison = 0;
+        SeekCharacter.gameObject.SetActive(true);
+        HideCharacter.gameObject.SetActive(false);
 
     }
     public void InsSeek() 
@@ -237,19 +247,19 @@ public class GameManager : MonoBehaviour
         GameObject currentLoadLevel = Resources.Load<GameObject>($"Level/{nameCurrentLevel}");
         GameObject currentLevel = Instantiate(currentLoadLevel);
     }
-
     private void ResetStateForPlayer()
     {
         if(StateOfGame == GameState.hide)
         {
-            Player.transform.GetChild(1).GetComponent<MovementPlayer>().MovementState(0);
-            Player.transform.GetChild(1).GetComponent<MovementPlayer>().SetStateIdle();
+            var MovementHidePlayer = Player.transform.GetChild(1).GetComponent<MovementPlayer>();
+            MovementHidePlayer.MovementState(0);
+            MovementHidePlayer.SetStateIdle();
         }
         else if(StateOfGame == GameState.seek)
         {
-            Player.transform.GetChild(0).GetComponent<MovementPlayer>().MovementState(0);
-            Player.transform.GetChild(0).GetComponent<MovementPlayer>().SetStateIdle();
-
+            var MovementSeekPlayer = Player.transform.GetChild(0).GetComponent<MovementPlayer>();
+            MovementSeekPlayer.MovementState(0);
+            MovementSeekPlayer.SetStateIdle();
         }
         
     }

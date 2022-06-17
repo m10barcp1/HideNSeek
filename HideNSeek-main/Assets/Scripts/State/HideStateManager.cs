@@ -30,12 +30,12 @@ public  class HideStateManager : MonoBehaviour
         if (this.gameObject.CompareTag("Player"))
         {
             Debug.Log(this.gameObject.GetComponent<MovementPlayer>());
-            this.gameObject.GetComponent<MovementPlayer>().MovementState(0);
+            gameObject.GetComponent<MovementPlayer>().MovementState(0);
             //GameManager.instance.LoseGameAction();
         }
         else
         {
-            this.gameObject.layer = LayerMask.NameToLayer("Imprison");
+            gameObject.layer = LayerMask.NameToLayer("Imprison");
         }
         IsImprisoned = true;
         jail.transform.position = transform.position;
@@ -43,6 +43,7 @@ public  class HideStateManager : MonoBehaviour
     }
     public void ResetState()
     {
+        gameObject.layer = LayerMask.NameToLayer("HideMask");
         transform.GetChild(0).gameObject.SetActive(true);
         
         if (!this.gameObject.CompareTag("Player"))
@@ -71,7 +72,8 @@ public  class HideStateManager : MonoBehaviour
             if (Physics.Raycast(LeftFootLocation.position, LeftFootLocation.forward, out hit, GroundMask))
             {
                 GameObject footPrint =  Instantiate(FootPrint, hit.point + hit.normal * .05f, Quaternion.LookRotation(hit.normal, LeftFootLocation.up));
-                footPrint.transform.rotation = new Quaternion(90, 0, 0, 0);
+                footPrint.transform.rotation = new Quaternion(0, 0, 0, 0);
+                //footPrint.transform.Rotate(new Vector3(90,0,0), Space.World); 
                 //GameObject footPrint = Instantiate(FootPrint,hit.transform);
                 StartCoroutine(PoolingFootPrint(2f, footPrint));
 
@@ -83,10 +85,11 @@ public  class HideStateManager : MonoBehaviour
         if (FootPrintMode)
         {
             RaycastHit hit;
-            if (Physics.Raycast(RightFootLocation.position, RightFootLocation.up, out hit, GroundMask))
+            if (Physics.Raycast(RightFootLocation.position, RightFootLocation.forward, out hit, GroundMask))
             {
                 GameObject footPrint =  Instantiate(FootPrint, hit.point+hit.normal*.05f, Quaternion.LookRotation(hit.normal, RightFootLocation.up));
-                footPrint.transform.rotation = new Quaternion(90, 0, 0, 0);
+                //footPrint.transform.Rotate(new Vector3(90, 0, 0), Space.World);
+                footPrint.transform.rotation = new Quaternion(0, 0, 0, 0);
                 //GameObject footPrint = Instantiate(FootPrint);
                 StartCoroutine(PoolingFootPrint(2f, footPrint));
             }
