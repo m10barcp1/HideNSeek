@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     [Header("Panel To Show")]
     public GameObject WinPanel;
     public GameObject LosePanel;
+    public GameObject MenuPanel;
 
     private float TimePlay, TimeStartUp;
     [Header("Text")]
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
     [Header("Button")]
     public GameObject HideBtn;
     public GameObject SeekBtn;
+    
 
     private int indexCurentLevel;
     private Transform InitTransform;
@@ -164,8 +166,9 @@ public class GameManager : MonoBehaviour
             StateOfGame = GameState.seek;
             onClick = true;
             joystick.SetActive(true);
-            HideBtn.SetActive(false);
-            SeekBtn.SetActive(false);
+            //HideBtn.SetActive(false);
+            //SeekBtn.SetActive(false);
+            MenuPanel.SetActive(false);
             InsSeek();
         }
     }
@@ -174,8 +177,9 @@ public class GameManager : MonoBehaviour
         if (!onClick)
         {
             int randomIndex = Random.Range(0, 5);
-            HideBtn.SetActive(false);
-            SeekBtn.SetActive(false);
+            //HideBtn.SetActive(false);
+            //SeekBtn.SetActive(false);
+            MenuPanel.SetActive(false);
             StateOfGame = GameState.hide;
             onClick = true;
             joystick.SetActive(true);
@@ -223,8 +227,9 @@ public class GameManager : MonoBehaviour
 
         WinPanel.SetActive(false);
         LosePanel.SetActive(false);
-        HideBtn.SetActive(true);
-        SeekBtn.SetActive(true);
+        //HideBtn.SetActive(true);
+        //SeekBtn.SetActive(true);
+        MenuPanel.SetActive(true);
         BeforeStartGame();
 
 
@@ -232,8 +237,9 @@ public class GameManager : MonoBehaviour
     public void OnClickNextLevel()
     {
         WinPanel.SetActive(false);
-        HideBtn.SetActive(true);
-        SeekBtn.SetActive(true);
+        //HideBtn.SetActive(true);
+        //SeekBtn.SetActive(true);
+        MenuPanel.SetActive(true);
         BeforeStartGame();
         indexCurentLevel++;
         InsLevel(indexCurentLevel);
