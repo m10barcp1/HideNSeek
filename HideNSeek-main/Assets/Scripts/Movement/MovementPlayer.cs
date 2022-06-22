@@ -12,6 +12,7 @@ public class MovementPlayer : MonoBehaviour
     private CharacterController _controller;
     private Animator anim;
     public DynamicJoystick joystick;
+    public Vector3 move;
     void Start()
     {
         _controller = GetComponent<CharacterController>();
@@ -19,18 +20,29 @@ public class MovementPlayer : MonoBehaviour
     }
     void Update()
     {
-        var HideCharacter = this.gameObject.GetComponent<HideStateManager>();
-        var SeekCharacter = this.gameObject.GetComponent<SeekStateManager>();
+        var HideCharacter = gameObject.GetComponent<HideStateManager>();
+        var SeekCharacter = gameObject.GetComponent<SeekStateManager>();
+
         if (!GameManager.instance.EndGame && GameManager.instance.onClick)
         {
-            if (Mathf.Abs(joystick.Horizontal) > .1f || Mathf.Abs(joystick.Vertical) > .1f)
-                _controller.enabled = true;
+            _controller.enabled = true;
             _controller.Move(new Vector3(0, -gravity * Time.deltaTime, 0));
+            float horizontalInput = joystick.Horizontal;
+            float verticalInput = joystick.Vertical;
             if (HideCharacter != null)
             {
                 if (!HideCharacter.IsImprisoned)
                 {
-                    MovementState(playSpeed);
+                    if (Mathf.Abs(horizontalInput) > .1f || Mathf.Abs(verticalInput) > .1f)
+                    {
+                        Debug.Log("MoveHide");
+                        move = new Vector3(horizontalInput,0, verticalInput);
+                        MovementState(playSpeed);
+                    }
+                    else
+                    {
+                        SetStateIdle();
+                    }   
                 }
             }
             else if (SeekCharacter != null)
@@ -50,31 +62,19 @@ public class MovementPlayer : MonoBehaviour
     public void MovementState(float Speed)
     {
         
-        float horizontalInput = joystick.Horizontal;
-        float verticalInput = joystick.Vertical;
-        Vector3 move = new Vector3(horizontalInput, 0, verticalInput);
-        if (Mathf.Abs(horizontalInput) > .1f || Mathf.Abs(verticalInput) > .1f)
-        {
-            move.y -= gravity;
-            _controller.Move(move * Time.deltaTime * Speed);
-            if (Speed != 0)
-            {
-                gameObject.transform.forward = new Vector3(horizontalInput, 0, verticalInput);
-                //Quaternion toRotation = Quaternion.LookRotation(move, Vector3.up);
-                //transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed);
-                anim.SetBool("IsMoving", true);
-                anim.SetFloat("Speed", Mathf.Max(Mathf.Abs(horizontalInput), Mathf.Abs(verticalInput)));
-            }
-        }
-        else
-        {
-            SetStateIdle();
-        }
+        move.y -= gravity;
+        _controller.Move(move * Time.deltaTime * Speed);
+        gameObject.transform.forward = new Vector3(move.x, 0 , move.z);
+        anim.SetBool("IsMoving", true);
+        anim.SetFloat("Speed", Mathf.Max(Mathf.Abs(move.x), Mathf.Abs(move.z)));
+
+
     }
     public void SetStateIdle()
     {
         anim.SetBool("IsMoving", false);
-        _controller.Move(Vector3.zero);
+        move = Vector3.zero;
+        _controller.Move(move);
     }   
     private void OnTriggerEnter(Collider other)
     {

@@ -15,7 +15,7 @@ public class MovementEnemies : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         nma = this.GetComponent<NavMeshAgent>();
-        bndFloor = GameObject.Find("floor").GetComponent<Renderer>().bounds;
+        //bndFloor = GameObject.Find("floor").GetComponent<Renderer>().bounds;
     }
     private void Start()
     {
@@ -55,9 +55,8 @@ public class MovementEnemies : MonoBehaviour
         nma.speed = moveSpeed;
         anim.SetBool("IsMoving", true);
         anim.SetFloat("Speed", nma.speed);
-        if (!nma.hasPath && !flag)
+        if (!nma.hasPath)
         {
-            flag = true;
             SetRandomDestination();
         }
         if (HideCharacter != null)
@@ -71,22 +70,19 @@ public class MovementEnemies : MonoBehaviour
     }
     private void SetRandomDestination()
     {
-        //1. pick a point
-        float rx = Random.Range(bndFloor.min.x, bndFloor.max.x);
-        float rz = Random.Range(bndFloor.min.z, bndFloor.max.z);
-          
-        moveto = new Vector3(rx, this.transform.position.y, rz);
-
-        Vector3 movementDirection = new Vector3(moveto.x, 0, moveto.z);
-        movementDirection.Normalize();
-        Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 4f * Time.deltaTime);
-        nma.SetDestination(moveto);
-        Invoke("CheckPointOnPath", 0.2f);
-        flag = false;
+        nma.SetDestination(RandomNavmeshLocation(5f));
     }
-    private void CheckPointOnPath()
+
+    public Vector3 RandomNavmeshLocation(float radius)
     {
-        if (nma.pathEndPosition != moveto) SetRandomDestination();
+        Vector3 randomDirection = Random.insideUnitSphere * radius;
+        randomDirection += transform.position;
+        NavMeshHit hit;
+        Vector3 finalPosition = Vector3.zero;
+        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
+        {
+            finalPosition = hit.position;
+        }
+        return finalPosition;
     }
 }
