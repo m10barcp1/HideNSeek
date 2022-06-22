@@ -5,7 +5,7 @@ using UnityEngine;
 public class MovementPlayer : MonoBehaviour
 {
     [SerializeField]
-    private float playSpeed = 2.5f;
+    private float playSpeed = 0.5f;
     [SerializeField]
     private float rotationSpeed = 5f;
     private float gravity = 9.8f;
@@ -16,7 +16,7 @@ public class MovementPlayer : MonoBehaviour
     void Start()
     {
         _controller = GetComponent<CharacterController>();
-        anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();   
     }
     void Update()
     {
@@ -27,54 +27,83 @@ public class MovementPlayer : MonoBehaviour
         {
             _controller.enabled = true;
             _controller.Move(new Vector3(0, -gravity * Time.deltaTime, 0));
-            float horizontalInput = joystick.Horizontal;
-            float verticalInput = joystick.Vertical;
+            
             if (HideCharacter != null)
             {
+                //Debug.Log($"{Mathf.Abs(verticalInput)} - Vertical  +  {Mathf.Abs(horizontalInput)} - Horizontal  ");
+                SetStateIdle();
                 if (!HideCharacter.IsImprisoned)
                 {
-                    if (Mathf.Abs(horizontalInput) > .1f || Mathf.Abs(verticalInput) > .1f)
+                    
+                    if (Mathf.Abs(joystick.Horizontal) > .1f || Mathf.Abs(joystick.Vertical) > .1f)
                     {
+                        float horizontalInput = joystick.Horizontal;
+                        float verticalInput = joystick.Vertical;
                         Debug.Log("MoveHide");
                         move = new Vector3(horizontalInput,0, verticalInput);
                         MovementState(playSpeed);
+                        
                     }
                     else
                     {
                         SetStateIdle();
-                    }   
+                    }
+                }
+                else
+                {
+                    joystick.resetInput();
                 }
             }
             else if (SeekCharacter != null)
             {
+                
+
                 if (GameManager.instance.StartGame)
                 {
-                    MovementState(2.5f);
+                    if (Mathf.Abs(joystick.Horizontal) > .1f || Mathf.Abs(joystick.Vertical) > .1f)
+                    {
+                        float horizontalInput = joystick.Horizontal;
+                        float verticalInput = joystick.Vertical;
+                        move = new Vector3(horizontalInput, 0, verticalInput);
+                        MovementState(playSpeed);
+
+                    }
+                    else
+                    {
+                        SetStateIdle();
+                    }
+                }
+                else
+                {
+                    joystick.resetInput();
                 }
             }
         }
         else
         {
+            joystick.resetInput();  
             _controller.enabled = false;
 
         }
+        
+                
+
     }
     public void MovementState(float Speed)
     {
         
         move.y -= gravity;
         _controller.Move(move * Time.deltaTime * Speed);
-        gameObject.transform.forward = new Vector3(move.x, 0 , move.z);
+        transform.forward = new Vector3(move.x, 0 , move.z);
         anim.SetBool("IsMoving", true);
         anim.SetFloat("Speed", Mathf.Max(Mathf.Abs(move.x), Mathf.Abs(move.z)));
-
+        //joystick = new DynamicJoystick();
 
     }
     public void SetStateIdle()
     {
         anim.SetBool("IsMoving", false);
         move = Vector3.zero;
-        _controller.Move(move);
     }   
     private void OnTriggerEnter(Collider other)
     {

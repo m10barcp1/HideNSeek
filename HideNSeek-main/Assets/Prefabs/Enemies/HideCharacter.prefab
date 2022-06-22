@@ -1293,6 +1293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76836534d8d84d4aa539f5bdb80d9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotateSpeed: 3
 --- !u!54 &5343024631463861052
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1349,7 +1350,8 @@ MonoBehaviour:
   SeekPlayer: {fileID: 0}
   RightFootLocation: {fileID: 6559823280331594420}
   LeftFootLocation: {fileID: 7584601340364349876}
-  FootPrint: {fileID: 2947467162639431299, guid: 74e633631c84a0e4a978d12c528da918, type: 3}
+  FootPrintLeft: {fileID: 485244137939795920, guid: c99e6055806dff346aaee7545545e2fb, type: 3}
+  FootPrintRight: {fileID: 1214129980425400611, guid: 49073b8ddc9092c4ba497b23c0d6eb1b, type: 3}
   FootPrintMode: 0
   GroundMask:
     serializedVersion: 2

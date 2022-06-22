@@ -7,7 +7,8 @@ using UnityEngine.AI;
 public class MovementEnemies : MonoBehaviour
 {
     private NavMeshAgent nma = null;
-    private Bounds bndFloor;
+    [SerializeField]
+    private float rotateSpeed;
     private Vector3 moveto;
     private bool flag = false;
     private Animator anim;
@@ -15,7 +16,6 @@ public class MovementEnemies : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         nma = this.GetComponent<NavMeshAgent>();
-        //bndFloor = GameObject.Find("floor").GetComponent<Renderer>().bounds;
     }
     private void Start()
     {
@@ -33,13 +33,13 @@ public class MovementEnemies : MonoBehaviour
             nma.enabled = true;
             if (HideCharacter!= null)
             {
-                CharacterMovement(2f);
+                CharacterMovement(1.5f);
             }
             else if(SeekCharacter!= null)
             {
                 if (GameManager.instance.StartGame)
                 {
-                    CharacterMovement(3f);
+                    CharacterMovement(2f);
                 }
             }
         }
@@ -67,10 +67,13 @@ public class MovementEnemies : MonoBehaviour
                 anim.SetBool("IsMoving", false);
             }
         }
+        
     }
     private void SetRandomDestination()
     {
-        nma.SetDestination(RandomNavmeshLocation(5f));
+        Vector3 targetPosition = RandomNavmeshLocation(5f);
+        RotateObject(targetPosition);
+        nma.SetDestination(targetPosition);
     }
 
     public Vector3 RandomNavmeshLocation(float radius)
@@ -84,5 +87,20 @@ public class MovementEnemies : MonoBehaviour
             finalPosition = hit.position;
         }
         return finalPosition;
+    }
+
+    public void RotateObject(Vector3 target)
+    {
+        Vector3 dir = target - transform.position;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        Quaternion rotateToTarget = Quaternion.AngleAxis(angle, Vector3.forward);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotateToTarget, Time.deltaTime * rotateSpeed);
+    }
+    public void OnTriggerEnter(Collider other)
+    {
+        if (gameObject.tag == other.gameObject.tag)
+        {
+            SetRandomDestination();
+        }
     }
 }

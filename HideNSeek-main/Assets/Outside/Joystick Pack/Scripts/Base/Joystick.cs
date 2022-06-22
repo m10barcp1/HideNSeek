@@ -40,6 +40,16 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     private Vector2 input = Vector2.zero;
 
+    //public Joystick instance;
+
+    //private void Awake()
+    //{
+    //    if(instance == null)
+    //    {
+    //        instance = this;
+    //    }
+    //}
+
     protected virtual void Start()
     {
         HandleRange = handleRange;
@@ -131,8 +141,13 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     public virtual void OnPointerUp(PointerEventData eventData)
     {
-        input = Vector2.zero;
-        handle.anchoredPosition = Vector2.zero;
+        input = Vector3.zero;
+        handle.anchoredPosition = Vector3.zero;
+    }
+    public void resetInput()
+    {
+        input = Vector3.zero;
+        handle.anchoredPosition = Vector3.zero;
     }
 
     protected Vector2 ScreenPointToAnchoredPosition(Vector2 screenPosition)

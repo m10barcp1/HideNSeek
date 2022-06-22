@@ -15,23 +15,47 @@ public  class HideStateManager : MonoBehaviour
     public GameObject SeekPlayer;
     public Transform RightFootLocation;
     public Transform LeftFootLocation;
-    public GameObject FootPrint;
+    public GameObject FootPrintLeft;
+    public GameObject FootPrintRight;
+    public int footStep;
     public bool FootPrintMode;
     public LayerMask GroundMask;
+    float SeekPlayerRadius;
     private void Awake()
     {
         if (!this.gameObject.CompareTag("Player"))
             rb = GetComponent<Rigidbody>();
         IsImprisoned = false;
         FootPrintMode = false;
+        footStep = 0;
+    }
+    private void Update()
+    {
+        if (GameManager.instance.StateOfGame == GameManager.GameState.seek &&
+            !gameObject.CompareTag("Player"))
+        {
+            float SeekPlayerRadius = SeekPlayer.GetComponent<SeekStateManager>().viewRadius;
+            if (Vector3.Distance(transform.position, SeekPlayer.transform.position) <= SeekPlayerRadius)
+            {
+                FootPrintMode = true;
+            }
+            else
+            {
+                footStep = 0;
+                FootPrintMode = false;
+            }
+        }
+        else
+        {
+            footStep = 0;
+            FootPrintMode = false;
+        }
     }
     public void Imprison()
     {
         if (this.gameObject.CompareTag("Player"))
         {
-            Debug.Log(this.gameObject.GetComponent<MovementPlayer>());
-            gameObject.GetComponent<MovementPlayer>().MovementState(0);
-            //GameManager.instance.LoseGameAction();
+            GameManager.instance.LoseGameAction();
         }
         else
         {
@@ -66,60 +90,44 @@ public  class HideStateManager : MonoBehaviour
 
     public void LeftFootIns()
     {
-        if (FootPrintMode)
-        {
+        //if (FootPrintMode)
+        //{
             RaycastHit hit;
-            if (Physics.Raycast(LeftFootLocation.position, LeftFootLocation.forward, out hit, GroundMask))
+            if (Physics.Raycast(LeftFootLocation.position, LeftFootLocation.forward, out hit))
             {
-                GameObject footPrint =  Instantiate(FootPrint, hit.point + hit.normal * .05f, Quaternion.LookRotation(hit.normal, LeftFootLocation.up));
-                footPrint.transform.rotation = new Quaternion(0, 0, 0, 0);
-                //footPrint.transform.Rotate(new Vector3(90,0,0), Space.World); 
-                //GameObject footPrint = Instantiate(FootPrint,hit.transform);
-                StartCoroutine(PoolingFootPrint(2f, footPrint));
-
+                FootPrintLeft.transform.GetChild(footStep % 2).transform.position = hit.transform.position; 
+                FootPrintLeft.transform.GetChild(footStep % 2).gameObject.SetActive(true);
+                //GameObject footPrint = Instantiate(FootPrintLeft, hit.point + hit.normal * .05f, Quaternion.LookRotation(hit.normal, LeftFootLocation.up));
+                //footPrint.transform.rotation = new Quaternion(0, 0, 0, 0);
+                FootPrintLeft.transform.GetChild(footStep % 2).transform.rotation = transform.rotation;
+                StartCoroutine(PoolingFootPrint(2f, FootPrintLeft.transform.GetChild(footStep % 2).gameObject));
+                
             }
-        }
+            footStep++;
+        //}
     }
     public void RightFootIns()
     {
-        if (FootPrintMode)
-        {
+        //if (FootPrintMode)
+        //{
             RaycastHit hit;
-            if (Physics.Raycast(RightFootLocation.position, RightFootLocation.forward, out hit, GroundMask))
+            if (Physics.Raycast(RightFootLocation.position, RightFootLocation.forward, out hit))
             {
-                GameObject footPrint =  Instantiate(FootPrint, hit.point+hit.normal*.05f, Quaternion.LookRotation(hit.normal, RightFootLocation.up));
-                //footPrint.transform.Rotate(new Vector3(90, 0, 0), Space.World);
-                footPrint.transform.rotation = new Quaternion(0, 0, 0, 0);
-                //GameObject footPrint = Instantiate(FootPrint);
-                StartCoroutine(PoolingFootPrint(2f, footPrint));
+                FootPrintRight.transform.GetChild(footStep % 2).transform.position = hit.transform.position;
+                FootPrintRight.transform.GetChild(footStep % 2).gameObject.SetActive(true);
+                //GameObject footPrint = Instantiate(FootPrintRight, hit.point + hit.normal * .05f, Quaternion.LookRotation(hit.normal, RightFootLocation.up));
+                //footPrint.transform.rotation = new Quaternion(0, 0, 0, 0);
+                FootPrintRight.transform.GetChild(footStep % 2).transform.rotation = transform.rotation;
+                StartCoroutine(PoolingFootPrint(1f, FootPrintLeft.transform.GetChild(footStep % 2).gameObject));
+               
             }
-
-        }
+            footStep++;
+        //}
     }
-    private void Update()
-    {
-        if(GameManager.instance.StateOfGame == GameManager.GameState.seek &&
-            !gameObject.CompareTag("Player"))
-        {
-            float SeekPlayerRadius = SeekPlayer.GetComponent<SeekStateManager>().viewRadius;
-            if (Vector3.Distance(transform.position, SeekPlayer.transform.position) <= SeekPlayerRadius)
-            {
-                FootPrintMode = true;
-            }
-            else
-            {
-                FootPrintMode = false;
-            }
-        }
-        else
-        {
-            FootPrintMode = false;
-        }
-    }
-
     IEnumerator PoolingFootPrint(float seconds, GameObject footPrint)
     {
         yield return new WaitForSeconds(seconds);
-        Destroy(footPrint);
+        //Destroy(footPrint);
+        footPrint.SetActive(false);
     }
 }

@@ -64,13 +64,21 @@ public class SeekStateManager : MonoBehaviour
     {
 		CharacerInImprison++;
 		PrisonerText.text = CharacerInImprison.ToString();
+		if(gameObject.CompareTag("Player") && CharacerInImprison == 6)
+        {
+			GameManager.instance.WinGameAction();
+        }
 	}
 	public void DecreaseCharaceterInImprison()
     {
 		CharacerInImprison--;
 		PrisonerText.text = CharacerInImprison.ToString();
 	}
-
+	public void ResetState()
+	{ 
+		transform.localRotation = new Quaternion(0, 0, 0, 0);
+		transform.localPosition = Vector3.zero;
+	}
 
 	public void FieldOfViewCheck()
     {

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2947467162639431299
+--- !u!1 &1214129980425400611
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,35 +8,35 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4709558403253036246}
+  - component: {fileID: 8747471957289755510}
   m_Layer: 0
-  m_Name: Foot
+  m_Name: FootRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4709558403253036246
+--- !u!4 &8747471957289755510
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2947467162639431299}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 1214129980425400611}
+  m_LocalRotation: {x: 0, y: 0.22506154, z: 0, w: 0.9743446}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4646095229040139254}
+  - {fileID: 8666275826796010582}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &2866776799161411655
+  m_LocalEulerAnglesHint: {x: 0, y: 26.013, z: 0}
+--- !u!1001 &2303067030895521767
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 4709558403253036246}
+    m_TransformParent: {fileID: 8747471957289755510}
     m_Modifications:
     - target: {fileID: 7472290582892377009, guid: 80c551d2b7c9757438e8acfcefecf189, type: 3}
       propertyPath: m_RootOrder
@@ -84,12 +84,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7472290582892377015, guid: 80c551d2b7c9757438e8acfcefecf189, type: 3}
       propertyPath: m_Name
-      value: kisspng-dog-paw-cat-clip-art-claw-paw-print-paw-print-8-x8-png-clipart-down-5d018ad59cc116.5799940315603821656421-removebg-preview
+      value: FootImg
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80c551d2b7c9757438e8acfcefecf189, type: 3}
---- !u!4 &4646095229040139254 stripped
+--- !u!4 &8666275826796010582 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7472290582892377009, guid: 80c551d2b7c9757438e8acfcefecf189, type: 3}
-  m_PrefabInstance: {fileID: 2866776799161411655}
+  m_PrefabInstance: {fileID: 2303067030895521767}
   m_PrefabAsset: {fileID: 0}

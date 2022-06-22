@@ -78,36 +78,39 @@ public class GameManager : MonoBehaviour
                 StartGame = true;
                 UpdateTimePlay();
                 // X? lý trong ván
-                if (HidePlayer != null)
-                {
-                    if (HidePlayer.IsImprisoned)
-                    {
-                        ResetStateForPlayer();
-                        EndGame = true;
-                        if(!WinGame)    LoseGameAction();
-                    }
-                }
+                //if (HidePlayer != null)
+                //{
+                //    if (HidePlayer.IsImprisoned)
+                //    {
+                        
+                        
+                //        if(!WinGame)    LoseGameAction();
+                //    }
+                //}
                 // X? lý khi k?t thúc ván
-                if (TimePlay <= 0)
+                if (!EndGame)
                 {
-                    EndGame = true; 
-                    ResetStateForPlayer();
-                    if (StateOfGame == GameState.hide)
+                    if (TimePlay <= 0)
                     {
-                        if (!LoseGame)
-                        { 
-                            WinGameAction();
-                        }
-                    }
-                    else if(StateOfGame == GameState.seek)
-                    {
-                        if(SeekPlayer.CharacerInImprison > Character.Length/2)
+                        EndGame = true;
+                        ResetStateForPlayer();
+                        if (StateOfGame == GameState.hide)
                         {
-                            WinGameAction();
+                            if (!LoseGame)
+                            {
+                                WinGameAction();
+                            }
                         }
-                        else if(!WinGame)
-                        {  
-                            LoseGameAction();
+                        else if (StateOfGame == GameState.seek)
+                        {
+                            if (SeekPlayer.CharacerInImprison > Character.Length / 2)
+                            {
+                                WinGameAction();
+                            }
+                            else if (!WinGame)
+                            {
+                                LoseGameAction();
+                            }
                         }
                     }
                 }
@@ -115,7 +118,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            TimePlay = 30f;
+            TimePlay = 10f;
             TimeStartUp = 4f;
             StartGame = false; EndGame = false;
             WinGame = false; LoseGame = false;
@@ -210,35 +213,38 @@ public class GameManager : MonoBehaviour
     }
     public void WinGameAction()
     {
+        ResetStateOfAllCharacerAndPlayer();
         WinPanel.SetActive(true);
+        EndGame = true;
         WinGame = true;
         joystick.SetActive(false);
     }
     public void LoseGameAction()
-    {       
+    {
+        ResetStateOfAllCharacerAndPlayer();
         LosePanel.SetActive(true);
+        EndGame = true;
         LoseGame = true;
         joystick.SetActive(false);
     }
+    public void ResetStateOfAllCharacerAndPlayer() {
+        foreach (GameObject i in Character)
+        {
+            i.transform.GetChild(1).GetComponent<HideStateManager>().ResetState();
+            i.transform.GetChild(0).GetComponent<SeekStateManager>().ResetState();
+        }
+        ResetStateForPlayer();
+    }
     public void OnClickPlayAgain()
     {
-        //onClick = false;
-        //LoseGame = false;
-
         WinPanel.SetActive(false);
         LosePanel.SetActive(false);
-        //HideBtn.SetActive(true);
-        //SeekBtn.SetActive(true);
         MenuPanel.SetActive(true);
         BeforeStartGame();
-
-
     }
     public void OnClickNextLevel()
     {
         WinPanel.SetActive(false);
-        //HideBtn.SetActive(true);
-        //SeekBtn.SetActive(true);
         MenuPanel.SetActive(true);
         BeforeStartGame();
         indexCurentLevel++;
@@ -260,7 +266,7 @@ public class GameManager : MonoBehaviour
             var MovementHidePlayer = Player.transform.GetChild(1).GetComponent<MovementPlayer>();
             MovementHidePlayer.MovementState(0);
             MovementHidePlayer.SetStateIdle();
-        }
+        }   
         else if(StateOfGame == GameState.seek)
         {
             var MovementSeekPlayer = Player.transform.GetChild(0).GetComponent<MovementPlayer>();
