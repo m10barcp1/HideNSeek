@@ -1244,7 +1244,7 @@ GameObject:
   - component: {fileID: 4354546208852289251}
   m_Layer: 3
   m_Name: SeekCharacter
-  m_TagString: Player
+  m_TagString: SeekCharacter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1282,7 +1282,7 @@ Animator:
   m_GameObject: {fileID: 3006961085071985750}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: e196fbc6236d03540adc093959e25039, type: 3}
-  m_Controller: {fileID: 9100000, guid: 7c89d683418cc4244b8d39d2a7efddcf, type: 2}
+  m_Controller: {fileID: 9100000, guid: ce2b8eab22b8a264db5e588b29d74be7, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1303,6 +1303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76836534d8d84d4aa539f5bdb80d9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 0
   rotateSpeed: 3
 --- !u!114 &2700953601330876218
 MonoBehaviour:

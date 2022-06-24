@@ -228,7 +228,7 @@ GameObject:
   m_Layer: 3
   m_Name: RightFootLocation
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -239,8 +239,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 558584261188393312}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: 0.00000001071021, z: 0.000000025029294, w: 0.7071068}
+  m_LocalPosition: {x: 0.003, y: -0.1, z: 0.085}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1819303372522969085}
@@ -1293,6 +1293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76836534d8d84d4aa539f5bdb80d9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 0
   rotateSpeed: 3
 --- !u!54 &5343024631463861052
 Rigidbody:
@@ -1350,8 +1351,6 @@ MonoBehaviour:
   SeekPlayer: {fileID: 0}
   RightFootLocation: {fileID: 6559823280331594420}
   LeftFootLocation: {fileID: 7584601340364349876}
-  FootPrintLeft: {fileID: 485244137939795920, guid: c99e6055806dff346aaee7545545e2fb, type: 3}
-  FootPrintRight: {fileID: 1214129980425400611, guid: 49073b8ddc9092c4ba497b23c0d6eb1b, type: 3}
   FootPrintMode: 0
   GroundMask:
     serializedVersion: 2
@@ -2244,7 +2243,7 @@ GameObject:
   m_Layer: 3
   m_Name: LeftFootLocation
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2255,8 +2254,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8715832254025226864}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.70710677, y: 0.000000018626451, z: -0.0000000066356733, w: 0.7071068}
+  m_LocalPosition: {x: 0.007000059, y: -0.1069999, z: 0.0016998872}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7550942562065379835}

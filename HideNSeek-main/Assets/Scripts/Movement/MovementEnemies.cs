@@ -8,10 +8,15 @@ public class MovementEnemies : MonoBehaviour
 {
     private NavMeshAgent nma = null;
     [SerializeField]
+    private float moveSpeed;
+    [SerializeField]
     private float rotateSpeed;
-    private Vector3 moveto;
-    private bool flag = false;
     private Animator anim;
+    public bool canMove = true;
+    private NavMeshPath path;
+    Vector3 targetPosition;
+    int currentIndex = 0;
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -19,63 +24,83 @@ public class MovementEnemies : MonoBehaviour
     }
     private void Start()
     {
-        nma.speed = 0;
+        moveSpeed = 0;
         anim.SetBool("IsMoving", false);
-        SetRandomDestination();
+        //caculate first path
+        path = new NavMeshPath();
+        targetPosition = RandomNavmeshLocation(5f);
+        NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path);
+        
     }
     private void Update()
     {
         var HideCharacter = this.gameObject.GetComponent<HideStateManager>();
         var SeekCharacter = this.gameObject.GetComponent<SeekStateManager>();
 
-        if (GameManager.instance.onClick && !GameManager.instance.EndGame)
+        if (!GameManager.instance.EndGame && GameManager.instance.onClick)
         {
             nma.enabled = true;
+            
             if (HideCharacter!= null)
             {
-                CharacterMovement(1.5f);
+                if(!HideCharacter.IsImprisoned)
+                {   
+
+                    moveSpeed = 1.5f;
+                    SetRandomDestination(moveSpeed);
+                }
+                else anim.SetBool("IsMoving", false);
             }
             else if(SeekCharacter!= null)
             {
                 if (GameManager.instance.StartGame)
                 {
-                    CharacterMovement(2f);
+                    moveSpeed = 2f;
+                    SetRandomDestination(moveSpeed);
                 }
             }
         }
         else
         {
+            moveSpeed = 0;
             nma.enabled = false;
             anim.SetBool("IsMoving", false);
         }
     }
-    public void CharacterMovement(float moveSpeed)
+    
+    private void SetRandomDestination(float speed)
     {
-        var HideCharacter = this.gameObject.GetComponent<HideStateManager>();
-        nma.speed = moveSpeed;
-        anim.SetBool("IsMoving", true);
-        anim.SetFloat("Speed", nma.speed);
-        if (!nma.hasPath)
-        {
-            SetRandomDestination();
-        }
-        if (HideCharacter != null)
-        {
-            if (HideCharacter.IsImprisoned)
+        if ((Vector3.Distance(transform.position, targetPosition) < .1f
+            || currentIndex > path.corners.Length - 1))
             {
-                nma.speed = 0;
+                canMove = false;
                 anim.SetBool("IsMoving", false);
+                StartCoroutine(CreateANewPath(2f));
+                currentIndex = 0;
             }
+        
+        
+        if (canMove && currentIndex < path.corners.Length)
+        {
+            anim.SetBool("IsMoving", true);
+            RotateObject(path.corners[currentIndex]);
+            transform.position = Vector3.MoveTowards(transform.position, path.corners[currentIndex], speed * Time.deltaTime);
+            if (Vector3.Distance(transform.position, path.corners[currentIndex]) < .1f)
+                currentIndex++;
+            StopAllCoroutines();
         }
         
     }
-    private void SetRandomDestination()
-    {
-        Vector3 targetPosition = RandomNavmeshLocation(5f);
-        RotateObject(targetPosition);
-        nma.SetDestination(targetPosition);
+    IEnumerator CreateANewPath(float seconds)
+    {  
+        yield return new WaitForSeconds(seconds);
+        path = new NavMeshPath();
+        targetPosition = RandomNavmeshLocation(8f);
+        NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path);
+        
+        //anim.SetBool("IsMoving", true);
+        canMove = true;
     }
-
     public Vector3 RandomNavmeshLocation(float radius)
     {
         Vector3 randomDirection = Random.insideUnitSphere * radius;
@@ -88,19 +113,32 @@ public class MovementEnemies : MonoBehaviour
         }
         return finalPosition;
     }
-
     public void RotateObject(Vector3 target)
     {
-        Vector3 dir = target - transform.position;
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        Quaternion rotateToTarget = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotateToTarget, Time.deltaTime * rotateSpeed);
+        Vector3 direction = (target - transform.position).normalized;
+        Quaternion rotGoal = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotGoal, rotateSpeed * Time.deltaTime);
     }
     public void OnTriggerEnter(Collider other)
     {
-        if (gameObject.tag == other.gameObject.tag)
+        //if (gameObject.tag == other.gameObject.tag)
+        //{
+        //    SetRandomDestination();
+        //}
+        if (!gameObject.CompareTag("SeekCharacter"))
         {
-            SetRandomDestination();
+            var HideCharacter = other.GetComponent<HideStateManager>();
+            if (HideCharacter != null)
+            {
+                if (HideCharacter.IsImprisoned)
+                {
+                    HideCharacter.OutImprison();
+                    if (GameManager.instance.SeekEnemies != null)
+                    {
+                        GameManager.instance.SeekEnemies.GetComponent<SeekStateManager>().DecreaseCharaceterInImprison();
+                    }
+                }
+            }
         }
     }
 }

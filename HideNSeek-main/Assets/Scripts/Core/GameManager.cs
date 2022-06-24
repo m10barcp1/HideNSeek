@@ -65,10 +65,13 @@ public class GameManager : MonoBehaviour
         {
             var SeekPlayer = Player.transform.GetChild(0).GetComponent<SeekStateManager>();
             var HidePlayer = Player.transform.GetChild(1).GetComponent<HideStateManager>();
+
+            // Time
             CountDownToStartUp.enabled = true;
             TimeStartUp -= Time.deltaTime;
             CountDownToStartUp.text = Mathf.Round(TimeStartUp).ToString();
             
+            //StartGame
             if(TimeStartUp <= 0)
             {
                 if (StateOfGame == GameState.seek)
@@ -77,17 +80,7 @@ public class GameManager : MonoBehaviour
                 }
                 StartGame = true;
                 UpdateTimePlay();
-                // X? lý trong ván
-                //if (HidePlayer != null)
-                //{
-                //    if (HidePlayer.IsImprisoned)
-                //    {
-                        
-                        
-                //        if(!WinGame)    LoseGameAction();
-                //    }
-                //}
-                // X? lý khi k?t thúc ván
+                #region Process Endgame
                 if (!EndGame)
                 {
                     if (TimePlay <= 0)
@@ -114,54 +107,21 @@ public class GameManager : MonoBehaviour
                         }
                     }
                 }
+                #endregion
             }
         }
         else
         {
-            TimePlay = 10f;
+            TimePlay = 20f;
             TimeStartUp = 4f;
             StartGame = false; EndGame = false;
             WinGame = false; LoseGame = false;
         }
     }
-    void UpdateTimePlay()
-    {
-        CountDownToStartUp.enabled = false;
-        TimePlay = Mathf.Max(TimePlay - Time.deltaTime, 0);
-        CountDownTime.text = Mathf.Round(TimePlay).ToString();
-    }
-    public void BeforeStartGame()
-    {
-        // Set state
-        StartGame = false; EndGame = false;
-        WinGame = false; LoseGame = false;
-        onClick = false;
-        //Camera
-        Camera.GetComponent<CameraController>().ResetTransform();
-        var SeekPlayer = Player.transform.GetChild(0);
-        //SeekPlayer
-        Player.transform.position = InitTransform.position;
-        SeekPlayer.gameObject.SetActive(false);
-        SeekPlayer.transform.localPosition = Vector3.zero;
-        SeekPlayer.GetComponent<SeekStateManager>().ResetCharaceterInImprison();
-        //HidePlayer
-        Player.transform.GetChild(1).gameObject.SetActive(true);
-        Player.transform.GetChild(1).GetComponent<HideStateManager>().ResetState();
+    
+    
 
-        for (int j = 0; j < Character.Length; j++)
-        {
-            var SeekCharacter = Character[j].transform.GetChild(0);
-            var HideCharacter = Character[j].transform.GetChild(1);
-            //Seek
-            SeekCharacter.gameObject.SetActive(false);
-            SeekCharacter.transform.localPosition = Vector3.zero;
-            SeekPlayer.GetComponent<SeekStateManager>().ResetCharaceterInImprison();    
-
-            //Hide
-            HideCharacter.gameObject.SetActive(true);
-            HideCharacter.GetComponent<HideStateManager>().ResetState();
-        }
-    }
+    #region Mode Game Play
     public void OnSeekState()
     {
         if (!onClick)
@@ -204,37 +164,32 @@ public class GameManager : MonoBehaviour
         Player.transform.GetChild(0).gameObject.SetActive(true);
         Player.transform.GetChild(1).gameObject.SetActive(false);
     }
-    public void TurnOffAllModelOfHideCharacter()
-    {
-        foreach(GameObject i in Character)
-        {
-            i.transform.GetChild(1).GetComponent<HideStateManager>().TurnOffModel();
-        }
-    }
+    #endregion
+    #region Core Panel
     public void WinGameAction()
     {
-        ResetStateOfAllCharacerAndPlayer();
-        WinPanel.SetActive(true);
-        EndGame = true;
-        WinGame = true;
-        joystick.SetActive(false);
+        if (!LoseGame)
+        {
+            ResetStateOfAllCharacerAndPlayer();
+            WinPanel.SetActive(true);
+            EndGame = true;
+            WinGame = true;
+            joystick.SetActive(false);
+        }
     }
     public void LoseGameAction()
     {
-        ResetStateOfAllCharacerAndPlayer();
-        LosePanel.SetActive(true);
-        EndGame = true;
-        LoseGame = true;
-        joystick.SetActive(false);
-    }
-    public void ResetStateOfAllCharacerAndPlayer() {
-        foreach (GameObject i in Character)
+        if (!WinGame)
         {
-            i.transform.GetChild(1).GetComponent<HideStateManager>().ResetState();
-            i.transform.GetChild(0).GetComponent<SeekStateManager>().ResetState();
+            ResetStateOfAllCharacerAndPlayer();
+            LosePanel.SetActive(true);
+            EndGame = true;
+            LoseGame = true;
+            joystick.SetActive(false);
         }
-        ResetStateForPlayer();
     }
+    #endregion
+    #region ButtonClick
     public void OnClickPlayAgain()
     {
         WinPanel.SetActive(false);
@@ -249,7 +204,48 @@ public class GameManager : MonoBehaviour
         BeforeStartGame();
         indexCurentLevel++;
         InsLevel(indexCurentLevel);
-        
+
+    }
+    #endregion
+    #region Core Funcion
+    private void UpdateTimePlay()
+    {
+        CountDownToStartUp.enabled = false;
+        TimePlay = Mathf.Max(TimePlay - Time.deltaTime, 0);
+        CountDownTime.text = Mathf.Round(TimePlay).ToString();
+    }
+    public void BeforeStartGame()
+    {
+        // Set state
+        StartGame = false; EndGame = false;
+        WinGame = false; LoseGame = false;
+        onClick = false;
+        //Camera
+        Camera.GetComponent<CameraController>().ResetTransform();
+        var SeekPlayer = Player.transform.GetChild(0);
+        var HidePlayer = Player.transform.GetChild(1);
+        //SeekPlayer
+        Player.transform.position = InitTransform.position;
+        SeekPlayer.gameObject.SetActive(false);
+        SeekPlayer.transform.localPosition = Vector3.zero;
+        SeekPlayer.GetComponent<SeekStateManager>().ResetCharaceterInImprison();
+        //HidePlayer
+        Player.transform.GetChild(1).gameObject.SetActive(true);
+        Player.transform.GetChild(1).GetComponent<HideStateManager>().ResetState();
+
+        for (int j = 0; j < Character.Length; j++)
+        {
+            var SeekCharacter = Character[j].transform.GetChild(0);
+            var HideCharacter = Character[j].transform.GetChild(1);
+            //Seek
+            SeekCharacter.gameObject.SetActive(false);
+            SeekCharacter.transform.localPosition = Vector3.zero;
+            SeekPlayer.GetComponent<SeekStateManager>().ResetCharaceterInImprison();
+
+            //Hide
+            HideCharacter.gameObject.SetActive(true);
+            HideCharacter.GetComponent<HideStateManager>().ResetState();
+        }
     }
     private void InsLevel(int index)
     {
@@ -275,4 +271,21 @@ public class GameManager : MonoBehaviour
         }
         
     }
+    public void ResetStateOfAllCharacerAndPlayer()
+    {
+        foreach (GameObject i in Character)
+        {
+            i.transform.GetChild(1).GetComponent<HideStateManager>().ResetState();
+            i.transform.GetChild(0).GetComponent<SeekStateManager>().ResetState();
+        }
+        ResetStateForPlayer();
+    }
+    public void TurnOffAllModelOfHideCharacter()
+    {
+        foreach (GameObject i in Character)
+        {
+            i.transform.GetChild(1).GetComponent<HideStateManager>().TurnOffModel();
+        }
+    }
+    #endregion
 }

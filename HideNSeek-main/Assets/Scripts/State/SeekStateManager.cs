@@ -38,28 +38,42 @@ public class SeekStateManager : MonoBehaviour
     }
     private void Update()
     {
+		// Khi bat dau game
         if (GameManager.instance.StartGame)
         {
+			// Check goc quan sat
 			FieldOfViewCheck();
-            foreach (var i in visibleTargets)
+            // Lay ra list target de thuc hien hanh dong
+			foreach (var i in visibleTargets)
 			{
 				var HideStateOfCharacter = i.GetComponent<HideStateManager>();
 				if (HideStateOfCharacter != null)
 				{
 					HideStateOfCharacter.Imprison();
 				}
+				// Tang so luong tu nhan
 				IncreaseCharaceterInImprison();
-				
 			}
-			
 		}
+		// Ve ra goc quan sat
 		DrawFieldOfView();
 	}
+	// Reset trang thai
+	public void ResetState()
+	{
+		transform.localRotation = new Quaternion(0, 0, 0, 0);
+		transform.localPosition = Vector3.zero;
+		//	transform.position = Vector3.zero;
+	}
+
+	#region Process Number Of Imprison
+	// Reset lai tu nhan
 	public void ResetCharaceterInImprison()
     {
 		CharacerInImprison = 0;
 		PrisonerText.text = CharacerInImprison.ToString();
 	}
+	// Tang luong tu nhan
 	public void IncreaseCharaceterInImprison()
     {
 		CharacerInImprison++;
@@ -69,18 +83,15 @@ public class SeekStateManager : MonoBehaviour
 			GameManager.instance.WinGameAction();
         }
 	}
+	// Giam luong tu nhan
 	public void DecreaseCharaceterInImprison()
     {
 		CharacerInImprison--;
 		PrisonerText.text = CharacerInImprison.ToString();
 	}
-	public void ResetState()
-	{ 
-		transform.localRotation = new Quaternion(0, 0, 0, 0);
-		transform.localPosition = Vector3.zero;
-	}
-
-	public void FieldOfViewCheck()
+    #endregion
+    #region Check FOV
+    public void FieldOfViewCheck()
     {
 		visibleTargets.Clear();
 		Collider[] rangeChecks = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
@@ -99,12 +110,8 @@ public class SeekStateManager : MonoBehaviour
 			}
 		}
     }
+    #endregion
     #region DrawView
-
-
-
-
-
     void DrawFieldOfView()
 	{
 		int stepCount = Mathf.RoundToInt(viewAngle * meshResolution);
