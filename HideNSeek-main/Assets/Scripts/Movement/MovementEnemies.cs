@@ -28,7 +28,7 @@ public class MovementEnemies : MonoBehaviour
         anim.SetBool("IsMoving", false);
         //caculate first path
         path = new NavMeshPath();
-        targetPosition = RandomNavmeshLocation(5f);
+        targetPosition = RandomNavmeshLocation(7f);
         NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path);
         
     }

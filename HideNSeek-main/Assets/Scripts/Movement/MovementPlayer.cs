@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MovementPlayer : MonoBehaviour
 {
+    #region Variables
     [Header("Core Value")]
     [SerializeField]
     private float playSpeed = 1f;
@@ -12,17 +13,21 @@ public class MovementPlayer : MonoBehaviour
     private float gravity = 9.8f;
     [Header("Control")]
     public DynamicJoystick joystick;
-    private Vector3 startPosition;
+    public Vector3 startPosition;
     private CharacterController _controller;
     private Animator anim;
     private Vector3 move;
-    
-    
+    #endregion
+    public void Awake()
+    {
+        startPosition = transform.localPosition;
+    }
+
     void Start()
     {
         _controller = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
-        startPosition = transform.position;
+        
     }
     void Update()
     {
@@ -32,7 +37,7 @@ public class MovementPlayer : MonoBehaviour
         if (!GameManager.instance.EndGame && GameManager.instance.onClick)
         {
             _controller.enabled = true;
-            _controller.Move(new Vector3(0, -gravity * Time.deltaTime, 0));
+            //_controller.Move(new Vector3(0, gravity * Time.deltaTime, 0));
             #region Hide Mode
             if (HideCharacter != null)
             {
@@ -81,7 +86,7 @@ public class MovementPlayer : MonoBehaviour
     {
         //Positon
         move.y -= gravity;
-        _controller.Move(move * Time.deltaTime * Speed);
+        _controller.Move(new Vector3(move.x * Time.deltaTime * Speed, move.y * 2.5f, move.z * Time.deltaTime * Speed));
         // Rotation
         transform.forward = new Vector3(move.x, 0 , move.z);
         // Animator
@@ -93,8 +98,9 @@ public class MovementPlayer : MonoBehaviour
     {
         anim.SetBool("IsMoving", false);
         move = Vector3.zero;
-        transform.position = startPosition;
-    }   
+        //transform.position = startPosition;
+    }
+    public void ResetPositionPlayer() => transform.localPosition = startPosition;
     // Process rescue other player
     private void OnTriggerEnter(Collider other)
     {

@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    #region Variable
     public static GameManager instance;
     public enum GameState
     {
@@ -27,24 +29,31 @@ public class GameManager : MonoBehaviour
     public GameObject WinPanel;
     public GameObject LosePanel;
     public GameObject MenuPanel;
+    public GameObject GamePlayPanel;
+    public GameObject FunctionPanel;
 
     private float TimePlay, TimeStartUp;
     [Header("Text")]
-    public Text CountDownTime;
+    public TextMeshProUGUI CountDownTime;
     public Text CountDownToStartUp;
 
     [Header("Core")]
     public GameObject joystick;
     public GameObject Camera;
+    public Image Fill;
+    public Gradient gradient;
+    public Slider slider;
 
     [Header("Button")]
     public GameObject HideBtn;
     public GameObject SeekBtn;
     
-
-    private int indexCurentLevel;
+    [HideInInspector]
+    public int indexCurentLevel;
+    public TextMeshProUGUI showLevelTxt;
     private Transform InitTransform;
 
+    #endregion
 
     private void Awake()
     {
@@ -52,7 +61,9 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
+
         indexCurentLevel = 1;
+        showLevelTxt.text = indexCurentLevel.ToString();
     }
     private void Start()
     {
@@ -113,6 +124,7 @@ public class GameManager : MonoBehaviour
         else
         {
             TimePlay = 20f;
+            SetMaxTimePlay(TimePlay);
             TimeStartUp = 4f;
             StartGame = false; EndGame = false;
             WinGame = false; LoseGame = false;
@@ -129,9 +141,8 @@ public class GameManager : MonoBehaviour
             StateOfGame = GameState.seek;
             onClick = true;
             joystick.SetActive(true);
-            //HideBtn.SetActive(false);
-            //SeekBtn.SetActive(false);
             MenuPanel.SetActive(false);
+            GamePlayPanel.SetActive(true);
             InsSeek();
         }
     }
@@ -140,9 +151,8 @@ public class GameManager : MonoBehaviour
         if (!onClick)
         {
             int randomIndex = Random.Range(0, 5);
-            //HideBtn.SetActive(false);
-            //SeekBtn.SetActive(false);
             MenuPanel.SetActive(false);
+            GamePlayPanel.SetActive(true);
             StateOfGame = GameState.hide;
             onClick = true;
             joystick.SetActive(true);
@@ -172,9 +182,12 @@ public class GameManager : MonoBehaviour
         {
             ResetStateOfAllCharacerAndPlayer();
             WinPanel.SetActive(true);
+            GamePlayPanel.SetActive(false);
+            FunctionPanel.SetActive(false);
             EndGame = true;
             WinGame = true;
             joystick.SetActive(false);
+
         }
     }
     public void LoseGameAction()
@@ -183,6 +196,8 @@ public class GameManager : MonoBehaviour
         {
             ResetStateOfAllCharacerAndPlayer();
             LosePanel.SetActive(true);
+            GamePlayPanel.SetActive(false);
+            FunctionPanel.SetActive(false);
             EndGame = true;
             LoseGame = true;
             joystick.SetActive(false);
@@ -195,23 +210,42 @@ public class GameManager : MonoBehaviour
         WinPanel.SetActive(false);
         LosePanel.SetActive(false);
         MenuPanel.SetActive(true);
+        FunctionPanel.SetActive(true);
+        CountDownTime.text = "00";
         BeforeStartGame();
     }
     public void OnClickNextLevel()
     {
+        CountDownTime.text = "00";
         WinPanel.SetActive(false);
         MenuPanel.SetActive(true);
+        FunctionPanel.SetActive(true);
         BeforeStartGame();
         indexCurentLevel++;
+        showLevelTxt.text = indexCurentLevel.ToString();
         InsLevel(indexCurentLevel);
 
     }
     #endregion
     #region Core Funcion
+
+    public void SetMaxTimePlay(float time)
+    {
+        slider.maxValue = time;
+        slider.value = time;
+        Fill.color = gradient.Evaluate(1f);
+    }
+    public void SetCurrentTime(float time)
+    {
+        slider.value = time;
+        Fill.color = gradient.Evaluate(slider.normalizedValue);
+    }
     private void UpdateTimePlay()
     {
+
         CountDownToStartUp.enabled = false;
         TimePlay = Mathf.Max(TimePlay - Time.deltaTime, 0);
+        SetCurrentTime(TimePlay);
         CountDownTime.text = Mathf.Round(TimePlay).ToString();
     }
     public void BeforeStartGame()
@@ -233,6 +267,9 @@ public class GameManager : MonoBehaviour
         Player.transform.GetChild(1).gameObject.SetActive(true);
         Player.transform.GetChild(1).GetComponent<HideStateManager>().ResetState();
 
+        //Reset Transform
+        SeekPlayer.GetComponent<MovementPlayer>().ResetPositionPlayer();
+        HidePlayer.GetComponent<MovementPlayer>().ResetPositionPlayer();
         for (int j = 0; j < Character.Length; j++)
         {
             var SeekCharacter = Character[j].transform.GetChild(0);

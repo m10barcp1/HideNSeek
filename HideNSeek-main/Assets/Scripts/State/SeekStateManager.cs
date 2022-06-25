@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class SeekStateManager : MonoBehaviour
 {
+    #region Variables
     public float viewRadius;
     [Range(0, 360)]
     public float viewAngle;
@@ -29,6 +30,8 @@ public class SeekStateManager : MonoBehaviour
 
 	public Text PrisonerText;
 	public int CharacerInImprison;
+    #endregion
+
     private void Start()
     {
 		viewMesh = new Mesh();

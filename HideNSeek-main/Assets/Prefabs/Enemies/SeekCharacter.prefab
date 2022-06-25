@@ -1305,6 +1305,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 0
   rotateSpeed: 3
+  canMove: 1
 --- !u!114 &2700953601330876218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1321,10 +1322,10 @@ MonoBehaviour:
   viewAngle: 75
   targetMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 4104
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 1280
   hideCharacter: {fileID: 0}
   targetObj: {fileID: 0}
   visibleTargets: []
