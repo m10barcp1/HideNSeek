@@ -18,16 +18,20 @@ public class MovementPlayer : MonoBehaviour
     private Animator anim;
     private Vector3 move;
     #endregion
-    public void Awake()
-    {
-        startPosition = transform.localPosition;
-    }
-
     void Start()
     {
         _controller = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
-        
+        if (gameObject.CompareTag("SeekPlayer"))
+        {
+            startPosition = new Vector3(0, -0.675f, 0);
+
+        }else if (gameObject.CompareTag("HidePlayer"))
+        {
+            startPosition = new Vector3(0, -0.57f, 0);
+        }
+
+
     }
     void Update()
     {
@@ -37,7 +41,6 @@ public class MovementPlayer : MonoBehaviour
         if (!GameManager.instance.EndGame && GameManager.instance.onClick)
         {
             _controller.enabled = true;
-            //_controller.Move(new Vector3(0, gravity * Time.deltaTime, 0));
             #region Hide Mode
             if (HideCharacter != null)
             {
@@ -94,12 +97,7 @@ public class MovementPlayer : MonoBehaviour
         anim.SetFloat("Speed", Mathf.Max(Mathf.Abs(move.x), Mathf.Abs(move.z)));
 
     }
-    public void SetStateIdle()
-    {
-        anim.SetBool("IsMoving", false);
-        move = Vector3.zero;
-        //transform.position = startPosition;
-    }
+    public void SetStateIdle() => anim.SetBool("IsMoving", false);
     public void ResetPositionPlayer() => transform.localPosition = startPosition;
     // Process rescue other player
     private void OnTriggerEnter(Collider other)

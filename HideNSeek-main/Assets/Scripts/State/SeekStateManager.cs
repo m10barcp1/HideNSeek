@@ -65,7 +65,10 @@ public class SeekStateManager : MonoBehaviour
 	public void ResetState()
 	{
 		transform.localRotation = new Quaternion(0, 0, 0, 0);
-		transform.localPosition = Vector3.zero;
+        if ((!gameObject.CompareTag("SeekPlayer") || !gameObject.CompareTag("HidePlayer")))
+        {
+			transform.localPosition = Vector3.zero;
+		}
 		//	transform.position = Vector3.zero;
 	}
 
@@ -81,7 +84,7 @@ public class SeekStateManager : MonoBehaviour
     {
 		CharacerInImprison++;
 		PrisonerText.text = CharacerInImprison.ToString();
-		if(gameObject.CompareTag("Player") && CharacerInImprison == 6)
+		if((gameObject.CompareTag("SeekPlayer")) && CharacerInImprison == 6)
         {
 			GameManager.instance.WinGameAction();
         }

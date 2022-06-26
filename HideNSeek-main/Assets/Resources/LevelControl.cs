@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Level2 : MonoBehaviour
+public class LevelControl : MonoBehaviour
 {
     private NavMeshSurface nms;
     private void Awake()
@@ -12,12 +12,16 @@ public class Level2 : MonoBehaviour
     }
     void Start()
     {
-        nms.BuildNavMesh();   
+       
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    public void BakeNM(NavMeshData data)
+    {
+       
     }
 }

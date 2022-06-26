@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 using TMPro;
 
 public class GameManager : MonoBehaviour
@@ -256,12 +257,12 @@ public class GameManager : MonoBehaviour
         onClick = false;
         //Camera
         Camera.GetComponent<CameraController>().ResetTransform();
+
         var SeekPlayer = Player.transform.GetChild(0);
         var HidePlayer = Player.transform.GetChild(1);
         //SeekPlayer
         Player.transform.position = InitTransform.position;
         SeekPlayer.gameObject.SetActive(false);
-        SeekPlayer.transform.localPosition = Vector3.zero;
         SeekPlayer.GetComponent<SeekStateManager>().ResetCharaceterInImprison();
         //HidePlayer
         Player.transform.GetChild(1).gameObject.SetActive(true);
@@ -289,8 +290,13 @@ public class GameManager : MonoBehaviour
         GameObject CurrentLevelOfGame = GameObject.Find("Level" + (index - 1).ToString());
         Destroy(CurrentLevelOfGame);
         string nameCurrentLevel = "Level" + index.ToString();
+        string nameCurrentNavMeshData = "NavMesh-Level" + index.ToString();
+
         GameObject currentLoadLevel = Resources.Load<GameObject>($"Level/{nameCurrentLevel}");
+        NavMeshData currentNavMeshData = Resources.Load<NavMeshData>($"NavMeshData/{nameCurrentNavMeshData}");
+        Debug.Log(currentNavMeshData);
         GameObject currentLevel = Instantiate(currentLoadLevel);
+        currentLevel.GetComponent<LevelControl>().BakeNM(currentNavMeshData);
     }
     private void ResetStateForPlayer()
     {

@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
-using UnityEngine.AI;
 public  class HideStateManager : MonoBehaviour
 {
     #region Variables
@@ -23,7 +19,7 @@ public  class HideStateManager : MonoBehaviour
     #endregion
     private void Awake()
     {
-        if (!this.gameObject.CompareTag("Player"))
+        if (!gameObject.CompareTag("SeekPlayer") || !gameObject.CompareTag("HidePlayer"))
             rb = GetComponent<Rigidbody>();
         IsImprisoned = false;
         FootPrintMode = false;
@@ -31,7 +27,7 @@ public  class HideStateManager : MonoBehaviour
     private void Update()
     {
         if (GameManager.instance.StateOfGame == GameManager.GameState.seek &&
-            !gameObject.CompareTag("Player"))
+           (!gameObject.CompareTag("HidePlayer")))
         {
             float SeekPlayerRadius = SeekPlayer.GetComponent<SeekStateManager>().viewRadius;
             if (Vector3.Distance(transform.position, SeekPlayer.transform.position) <= SeekPlayerRadius)
@@ -55,14 +51,15 @@ public  class HideStateManager : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("HideMask");
         transform.GetChild(0).gameObject.SetActive(true);
         
-        if (!this.gameObject.CompareTag("Player"))
+        if (!gameObject.CompareTag("HidePlayer"))
         {
             StateImg.transform.GetChild(1).gameObject.SetActive(true);
             rb.velocity = Vector3.zero;
+            transform.localPosition = Vector3.zero;
         }
            
         transform.localRotation = new Quaternion(0, 0, 0, 0);
-        transform.localPosition = Vector3.zero;
+        
         TurnOnModel();
         jail.SetActive(false);
         IsImprisoned = false;
@@ -105,7 +102,7 @@ public  class HideStateManager : MonoBehaviour
     #region Process IsImprisoned
     public void Imprison()
     {
-        if (this.gameObject.CompareTag("Player"))
+        if (gameObject.CompareTag("HidePlayer"))
         {
             GameManager.instance.LoseGameAction();
         }
@@ -122,7 +119,12 @@ public  class HideStateManager : MonoBehaviour
     public void OutImprison()
     {
         gameObject.layer = LayerMask.NameToLayer("HideMask");
-        TurnOnModel();
+        if (!gameObject.CompareTag("HidePlayer"))
+        {
+            TurnOnModel();
+            StateImg.transform.GetChild(1).gameObject.SetActive(true);
+        }
+        
         jail.SetActive(false);
         IsImprisoned = false;
     }

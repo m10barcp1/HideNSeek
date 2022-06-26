@@ -16,6 +16,7 @@ public class MovementEnemies : MonoBehaviour
     private NavMeshPath path;
     Vector3 targetPosition;
     int currentIndex = 0;
+    private Vector3 startPoint;
 
     private void Awake()
     {
@@ -26,6 +27,7 @@ public class MovementEnemies : MonoBehaviour
     {
         moveSpeed = 0;
         anim.SetBool("IsMoving", false);
+        startPoint = transform.localPosition;
         //caculate first path
         path = new NavMeshPath();
         targetPosition = RandomNavmeshLocation(7f);
@@ -67,7 +69,8 @@ public class MovementEnemies : MonoBehaviour
             anim.SetBool("IsMoving", false);
         }
     }
-    
+
+    public void ResetPositionPlayer() => transform.localPosition = startPoint;
     private void SetRandomDestination(float speed)
     {
         if ((Vector3.Distance(transform.position, targetPosition) < .1f
@@ -113,7 +116,7 @@ public class MovementEnemies : MonoBehaviour
         }
         return finalPosition;
     }
-    public void RotateObject(Vector3 target)
+    public void RotateObject(Vector3 target) 
     {
         Vector3 direction = (target - transform.position).normalized;
         Quaternion rotGoal = Quaternion.LookRotation(direction);
