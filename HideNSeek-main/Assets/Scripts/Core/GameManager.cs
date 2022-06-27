@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     private float TimePlay, TimeStartUp;
     [Header("Text")]
     public TextMeshProUGUI CountDownTime;
-    public Text CountDownToStartUp;
+    public TextMeshProUGUI CountDownToStartUp;
 
     [Header("Core")]
     public GameObject joystick;

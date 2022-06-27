@@ -21,8 +21,6 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         currentTime = 0;
-
-        
     }
 
     // Update is called once per frame

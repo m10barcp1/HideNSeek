@@ -128,8 +128,6 @@ public class MovementEnemies : MonoBehaviour
         path = new NavMeshPath();
         targetPosition = RandomNavmeshLocation(8f);
         NavMesh.CalculatePath(transform.position, targetPosition, NavMesh.AllAreas, path);
-
-        //anim.SetBool("IsMoving", true);
         canMove = true;
     }
     public Vector3 RandomNavmeshLocation(float radius)
