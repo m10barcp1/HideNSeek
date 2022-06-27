@@ -22,6 +22,6 @@ public class LevelControl : MonoBehaviour
     }
     public void BakeNM(NavMeshData data)
     {
-       
+        nms.AddData();
     }
 }

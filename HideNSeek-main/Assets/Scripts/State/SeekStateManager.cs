@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SeekStateManager : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class SeekStateManager : MonoBehaviour
 	Mesh viewMesh;
 
 
-	public Text PrisonerText;
+	public TextMeshProUGUI PrisonerText;
 	public int CharacerInImprison;
     #endregion
 
@@ -65,11 +66,10 @@ public class SeekStateManager : MonoBehaviour
 	public void ResetState()
 	{
 		transform.localRotation = new Quaternion(0, 0, 0, 0);
-        if ((!gameObject.CompareTag("SeekPlayer") || !gameObject.CompareTag("HidePlayer")))
+        if (!gameObject.CompareTag("SeekPlayer"))
         {
 			transform.localPosition = Vector3.zero;
 		}
-		//	transform.position = Vector3.zero;
 	}
 
 	#region Process Number Of Imprison
@@ -77,23 +77,29 @@ public class SeekStateManager : MonoBehaviour
 	public void ResetCharaceterInImprison()
     {
 		CharacerInImprison = 0;
-		PrisonerText.text = CharacerInImprison.ToString();
+		SetNumberImprisonerForTxt();
 	}
 	// Tang luong tu nhan
 	public void IncreaseCharaceterInImprison()
     {
 		CharacerInImprison++;
-		PrisonerText.text = CharacerInImprison.ToString();
-		if((gameObject.CompareTag("SeekPlayer")) && CharacerInImprison == 6)
+		SetNumberImprisonerForTxt();
+		if ((gameObject.CompareTag("SeekPlayer")) && CharacerInImprison == 6)
         {
 			GameManager.instance.WinGameAction();
         }
+		
 	}
 	// Giam luong tu nhan
 	public void DecreaseCharaceterInImprison()
     {
 		CharacerInImprison--;
-		PrisonerText.text = CharacerInImprison.ToString();
+		SetNumberImprisonerForTxt();
+	}
+	public void SetNumberImprisonerForTxt()
+    {
+		if (gameObject.CompareTag("SeekPlayer"))
+			PrisonerText.text = CharacerInImprison.ToString();
 	}
     #endregion
     #region Check FOV

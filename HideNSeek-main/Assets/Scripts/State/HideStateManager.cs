@@ -1,4 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 public  class HideStateManager : MonoBehaviour
 {
     #region Variables
@@ -9,6 +12,8 @@ public  class HideStateManager : MonoBehaviour
     public Rigidbody rb;
     public GameObject SeekPlayer;
     public GameObject StateImg;
+    private int NumberOfRescue;
+    public TextMeshProUGUI textNumberOfRescue;
 
     [Header("Foot Print")]
     public Transform RightFootLocation;
@@ -23,6 +28,10 @@ public  class HideStateManager : MonoBehaviour
             rb = GetComponent<Rigidbody>();
         IsImprisoned = false;
         FootPrintMode = false;
+    }
+    private void Start()
+    {
+        NumberOfRescue = 0;
     }
     private void Update()
     {
@@ -56,6 +65,9 @@ public  class HideStateManager : MonoBehaviour
             StateImg.transform.GetChild(1).gameObject.SetActive(true);
             rb.velocity = Vector3.zero;
             transform.localPosition = Vector3.zero;
+        }else
+        {
+            ResetValueRescue();
         }
            
         transform.localRotation = new Quaternion(0, 0, 0, 0);
@@ -77,8 +89,7 @@ public  class HideStateManager : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(LeftFootLocation.position, 
                 new Vector3(LeftFootLocation.position.x, LeftFootLocation.position.y -.5f, LeftFootLocation.position.z), out hit,GroundMask))
-            {
-                Debug.Log("Left");   
+            {   
                 PoolingFootPrint.instance.FootPrint(hit.point, transform);
             }
         }
@@ -88,12 +99,10 @@ public  class HideStateManager : MonoBehaviour
     {
         if (FootPrintMode)
         {
-            Debug.Log("Collide");
             RaycastHit hit;
             if (Physics.Raycast(RightFootLocation.position, 
                 new Vector3(RightFootLocation.position.x, RightFootLocation.position.y -.4f, RightFootLocation.position.z), out hit,GroundMask))
             {
-                Debug.Log("Right");
                 PoolingFootPrint.instance.FootPrint(hit.point, transform);      
             }
         }
@@ -127,6 +136,25 @@ public  class HideStateManager : MonoBehaviour
         
         jail.SetActive(false);
         IsImprisoned = false;
+    }
+    #endregion
+
+    #region Process number of rescue 
+    public void ResetValueRescue()
+    {
+        if (gameObject.CompareTag("HidePlayer"))
+        {
+            NumberOfRescue = 0;
+            textNumberOfRescue.text = NumberOfRescue.ToString();
+        }        
+    }
+    public void IncreaseValueRescue()
+    {
+        if (gameObject.CompareTag("HidePlayer"))
+        {
+            NumberOfRescue++;
+            textNumberOfRescue.text = NumberOfRescue.ToString();
+        }
     }
     #endregion
 

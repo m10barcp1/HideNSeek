@@ -1295,6 +1295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 0
   rotateSpeed: 3
+  canMove: 1
 --- !u!54 &5343024631463861052
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1349,6 +1350,7 @@ MonoBehaviour:
   jail: {fileID: 8903301025808367844, guid: e4f8812c20e89b84a811d03779df1f00, type: 3}
   rb: {fileID: 5343024631463861052}
   SeekPlayer: {fileID: 0}
+  StateImg: {fileID: 0}
   RightFootLocation: {fileID: 6559823280331594420}
   LeftFootLocation: {fileID: 7584601340364349876}
   FootPrintMode: 0

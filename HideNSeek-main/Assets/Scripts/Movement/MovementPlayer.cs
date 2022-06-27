@@ -28,7 +28,7 @@ public class MovementPlayer : MonoBehaviour
 
         }else if (gameObject.CompareTag("HidePlayer"))
         {
-            startPosition = new Vector3(0, -0.57f, 0);
+            startPosition = new Vector3(0, -0.62f, 0);
         }
 
 
@@ -98,7 +98,11 @@ public class MovementPlayer : MonoBehaviour
 
     }
     public void SetStateIdle() => anim.SetBool("IsMoving", false);
-    public void ResetPositionPlayer() => transform.localPosition = startPosition;
+    public void ResetPositionPlayer()
+    {
+        Debug.Log("Calll");
+        transform.localPosition = startPosition;
+    }
     // Process rescue other player
     private void OnTriggerEnter(Collider other)
     {
@@ -110,10 +114,7 @@ public class MovementPlayer : MonoBehaviour
                 if (HideCharacter.IsImprisoned)
                 {
                     HideCharacter.OutImprison();
-                    if (GameManager.instance.SeekEnemies != null)
-                    {
-                        GameManager.instance.SeekEnemies.GetComponent<SeekStateManager>().DecreaseCharaceterInImprison();
-                    }
+                    GetComponent<HideStateManager>().IncreaseValueRescue();
                 }   
             }
         }
