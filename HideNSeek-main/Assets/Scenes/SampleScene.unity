@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5105,7 +5105,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 269510859321298268, guid: ea04b289e17a61546bb9a1c6aba0d015, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1.9997559
+      value: 1.9996948
       objectReference: {fileID: 0}
     - target: {fileID: 269510859321298268, guid: ea04b289e17a61546bb9a1c6aba0d015, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -7343,40 +7343,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 1373249778}
     m_Modifications:
     - target: {fileID: 2899983283745781746, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899983283745781746, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899983283745781746, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1347239851}
-    - target: {fileID: 2899983283745781746, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899983283745781746, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnHideState
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899983283745781746, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899983283745781746, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 2899983283745781748, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
       propertyPath: m_Name
       value: HideBtn
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899983283745781748, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2899983283745781749, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
       propertyPath: m_Pivot.x
@@ -7461,28 +7433,6 @@ PrefabInstance:
     - target: {fileID: 2899983283745781749, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899983284915589728, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
-      propertyPath: m_text
-      value: 'HIDE
-
-'
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899983284915589728, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
-      propertyPath: m_textAlignment
-      value: 65535
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899983284915589728, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899983284915589728, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
-      propertyPath: m_VerticalAlignment
-      value: 512
-      objectReference: {fileID: 0}
-    - target: {fileID: 2899983284915589728, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
-      propertyPath: m_HorizontalAlignment
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4df4f50c3d39462d88eebbd8e0fbd21, type: 3}
